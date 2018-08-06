@@ -1,10 +1,9 @@
-import uuid from 'uuid/v4';
-import { User } from './models';
+import { User } from './db/models';
 
-export default async function processLogin(req, res, next) {
+const processLogin = async function processLogin(req, res, next) {
   try {
     const {
-      facebook: id, displayName, name, email,
+      id, name, email, screenName,
     } = req.body;
 
     const token = Math.random().toString(36).substr(2, 100);
@@ -13,9 +12,9 @@ export default async function processLogin(req, res, next) {
     if (!user) {
       user = await User.create({
         id,
-        displayName,
-        name,
+        fullName: name,
         email,
+        screenName,
       });
     }
 
@@ -25,4 +24,6 @@ export default async function processLogin(req, res, next) {
   } catch (err) {
     next(err);
   }
-}
+};
+
+export default processLogin;

@@ -3,15 +3,23 @@ scalar Date
 scalar Void
 
 type Mutation {
-  createOwnedBook(id: String, userId: String): OwnedBook
+  createOwnedBook(input: CreateOwnedBookInput): OwnedBook
   updateOwnedBook(id: String, userId: String): OwnedBook
   deleteOwnedBook(id: String!): String
-  createRequestedBook(bookId: String, userId: String): RequestedBook
-  deleteRequestedBook(bookId: String!, userId: String!): String
   createTrade(bookId: String, userId: String): Trade
   deleteTrade(bookId: String!, userId: String!): Trade
   createUser(id: String, fullName: String, location: String): User
   updateUser(id: String, fullName: String, location: String): User
+}
+
+input CreateOwnedBookInput {
+  id: String
+  userId: String
+  title: String
+  author: String
+  imageUrl: String
+  publicationYear: Int
+  available: Boolean
 }
 
 type OwnedBook {
@@ -24,6 +32,11 @@ type OwnedBook {
     offset: Int
   ): [Trade]
   user: User
+  title: String
+  author: String
+  imageUrl: String
+  publicationYear: Int
+  available: Boolean
 }
 
 type Query {
@@ -37,18 +50,6 @@ type Query {
   ownedBook(
     id: String
   ): OwnedBook
-
-  requestedBooks(
-    limit: Int
-    order: String
-    where: JSON
-    offset: Int
-  ): [RequestedBook]
-
-  requestedBook(
-    bookId: String
-    userId: String
-  ): RequestedBook
 
   trades(
     limit: Int
@@ -74,34 +75,28 @@ type Query {
   ): User
 }
 
-type RequestedBook {
+type Trade {
   id: String!
-  userId: String
-  user: User
+  bookId: String
+  status: Int
+  ownedBook: OwnedBook
 }
 
-type Trade {
+type TradeBooks {
+  tradeId: String!
   bookId: String!
-  userId: String!
-  ownedBook: OwnedBook
 }
 
 type User {
   id: String!
   fullName: String
   location: String
-
+  screenName: String
+  email: String
   ownedBooks(
     limit: Int
     order: String
     where: JSON
     offset: Int
   ): [OwnedBook]
-
-  requestedBooks(
-    limit: Int
-    order: String
-    where: JSON
-    offset: Int
-  ): [RequestedBook]
 }

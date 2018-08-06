@@ -3,14 +3,16 @@ import onError from '../utils/onError';
 
 export function processResponse(response) {
   const {
-    id, first_name: displayName, name, email,
+    id, name, email,
   } = response;
 
+  const screenName = email.substring(0, email.indexOf('@'));
+
   const user = {
-    facebook: id,
-    displayName,
+    id,
     name,
     email,
+    screenName,
   };
 
   return axios.post('/auth/facebook', user);

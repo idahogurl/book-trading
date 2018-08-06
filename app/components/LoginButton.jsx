@@ -8,6 +8,7 @@ const LoginButton = function LoginButton(props) {
     <FacebookLogin
       appId="323585701513857"
       callback={props.onLogin}
+      fields="name,email"
       render={({ isWorking, isLoading, onClick }) => (
         <FacebookButton onClick={onClick}>
           {isLoading || isWorking ? 'Loading ...' : 'Log in With Facebook'}

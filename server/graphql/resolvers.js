@@ -1,5 +1,5 @@
 import GraphQLToolTypes from 'graphql-tools-types';
-import { OwnedBook, RequestedBook, Trade, User } from '../db/models'
+import { OwnedBook, RequestedBook, Trade, User } from '../db/models';
 
 const parseOrder = function parseOrder(order) {
   if (order) {
@@ -22,83 +22,72 @@ export default {
   Date: GraphQLToolTypes.Date({ name: 'Date' }),
   Void: GraphQLToolTypes.Void({ name: 'Void' }),
   Mutation: {
-    createOwnedBook: async (userId) => {
-      const ownedBook = OwnedBook.create({
-        id: uuid(),
-        userId,
-      })
-      return ownedBook
+    createOwnedBook: async (_, { input }) => {
+      const test = { ...input };
+      const ownedBook = OwnedBook.create(test);
+      return ownedBook;
     },
-    deleteOwnedBook: async (id) => {
+    deleteOwnedBook: async (_, { id }) => {
       await OwnedBook.destroy({
         where: { id },
-      })
-      return id
+      });
+      return id;
     },
-    createRequestedBook: async (bookId, userId) => {
-      const requestedBook = await RequestedBook.create({
-        userId,
-        bookId,
-      })
-      return requestedBook
-    },
-    deleteRequestedBook: async (id) => {
-      await RequestedBook.destroy({
-        where: { id }
-      })
-      return id
-    },
-    createTrade: async (bookId, userId) => {
+    createTrade: async (_, { bookId, userId }) => {
       const trade = Trade.create({
         bookId,
         userId,
-      })
-      return trade
+      });
+      return trade;
     },
-    deleteTrade: async (bookId, userId) => {
+    deleteTrade: async (_, { bookId, userId }) => {
       await Trade.destroy({
-        where: { bookId, userId }
-      })
-      return { bookId, userId }
+        where: { bookId, userId },
+      });
+      return { bookId, userId };
     },
-    createUser: async (id, fullName, location) => {
+    createUser: async (_, { id, fullName, location }) => {
       const user = User.create({
-        id, fullName, location
-      })
-      return user
+        id, fullName, location,
+      });
+      return user;
     },
-    updateUser: async (id, fullName, location) => {
-      const user = await User.findById(id)
-      await user.update({ fullName, location })
-      return user
+    updateUser: async (_, { id, fullName, location }) => {
+      const user = await User.findById(id);
+      await user.update({ fullName, location });
+      return user;
     },
-},
-Query: {
-  ownedBooks: async (limit, order, where, offset) => {
-    const books = await OwnedBooks.findAll(limit, parseOrder(order), parseWhere(where), offset)
-    return books
   },
-  ownedBook: async (id, where) => {
-    const book = await OwnedBooks.findById(id, where)
+  Query: {
+    ownedBooks: async (_, {
+      limit, order, where, offset,
+    }) => {
+      const books = await OwnedBook.findAll(limit, parseOrder(order), parseWhere(where), offset);
+      return books;
+    },
+    ownedBook: async (_, { id }) => {
+      const book = await OwnedBook.findById(id);
+      return book;
+    },
+    trades: async (_, {
+      limit, order, where, offset,
+    }) => {
+      const trades = await Trade.findAll(limit, parseOrder(order), parseWhere(where), offset);
+      return trades;
+    },
+    trade: async (_, { bookId, userId }) => {
+      const trade = await Trade.findOne({ where: { bookId, userId } });
+      return trade;
+    },
+    users: async (_, {
+      limit, order, where, offset,
+    }) => {
+      const books = await User.findAll(limit, parseOrder(order), parseWhere(where), offset);
+      return books;
+    },
+    user: async (_, { id }) => {
+      const user = await User.findById({ where: { id } });
+      return user;
+    },
   },
-  requestedBooks: async (limit, order, where, offset) => {
-    const books = await RequestedBook.findAll(limit, parseOrder(order), parseWhere(where), offset)
-    return books
-  },
-  requestedBook: async (bookId, userId) => {
-    const book = await RequestedBook.findOne({ where: { bookId, userId }})
-  },
-  trades: async (limit, order, where, offset) => {
-    const trades = await trades.findAll(limit, parseOrder(order), parseWhere(where), offset)
-    return trades
-  },
-  trade: async (bookId, userId) => {
-
-  },
-  users: async (limit, order, where, offset) => {
-
-  },
-  user: async (id, where) => {
-
-  }
-}
+};

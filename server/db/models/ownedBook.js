@@ -1,25 +1,41 @@
-module.exports = function (sequelize, DataTypes) {
-  const OwnedBook = sequelize.define('OwnedBook', {
+export default function (sequelize, DataTypes) {
+  return sequelize.define('OwnedBook', {
     id: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
       allowNull: false,
       primaryKey: true,
     },
     userId: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
       allowNull: false,
       field: 'user_id',
+    },
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    author: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    publicationYear: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      field: 'publication_year',
+    },
+    imageUrl: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      field: 'image_url',
+    },
+    available: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
     },
   }, {
     tableName: 'owned_books',
     timestamps: true,
     underscored: true,
   });
-
-  OwnedBook.associate = ({ User, RequestedBook, Trade }) => {
-    OwnedBook.belongsTo(User);
-    OwnedBook.hasMany(Trade);
-    OwnedBook.hasMany(RequestedBook);
-  };
-  return OwnedBook;
-};
+}

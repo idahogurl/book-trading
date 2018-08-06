@@ -1,9 +1,9 @@
 const SequelizeAuto = require('sequelize-auto');
 
-const auto = new SequelizeAuto('./dev.sqlite3', 'user', 'pass', {
+const auto = new SequelizeAuto('../../dev.sqlite3', 'user', 'pass', {
   host: 'localhost',
   dialect: 'sqlite',
-  storage: './dev.sqlite3',
+  storage: '../../dev.sqlite3',
   additional: {
     timestamps: true,
   },

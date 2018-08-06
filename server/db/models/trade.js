@@ -1,28 +1,27 @@
-module.exports = function (sequelize, DataTypes) {
+export default function (sequelize, DataTypes) {
   return sequelize.define('Trade', {
-    bookId: {
+    id: {
       type: DataTypes.TEXT,
       allowNull: false,
       primaryKey: true,
+    },
+    bookId: {
+      type: DataTypes.TEXT,
+      allowNull: false,
       references: {
         model: 'OwnedBook',
         key: 'id',
       },
       field: 'book_id',
     },
-    user_id: {
-      type: DataTypes.TEXT,
+    status: {
+      type: DataTypes.INTEGER,
       allowNull: false,
-      primaryKey: true,
-      references: {
-        model: 'User',
-        key: 'id',
-      },
-      field: 'user_id',
+      defaultValue: 0,
     },
   }, {
     tableName: 'trades',
     timestamps: true,
     underscored: true,
   });
-};
+}

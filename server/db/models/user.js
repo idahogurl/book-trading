@@ -1,17 +1,26 @@
-module.exports = function (sequelize, DataTypes) {
+export default function (sequelize, DataTypes) {
   return sequelize.define('User', {
     id: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
       allowNull: false,
       primaryKey: true,
     },
     fullName: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
       allowNull: false,
       field: 'full_name',
     },
+    screenName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      field: 'screen_name',
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     location: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
       allowNull: true,
     },
   }, {
@@ -19,4 +28,4 @@ module.exports = function (sequelize, DataTypes) {
     timestamps: true,
     underscored: true,
   });
-};
+}

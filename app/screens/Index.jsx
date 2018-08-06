@@ -1,6 +1,23 @@
-import React from 'react'
+import React from 'react';
+import { Switch, Route } from 'react-router-dom';
+
+import NavBar from '../components/NavBar';
+import AddBooksScreen from './AddBooks';
+import AvailableBooksScreen from './AvailableBooks';
 
 const IndexScreen = function IndexScreen() {
-  return <div>Content here</div>;
-}
+  return (
+    <div>
+      <NavBar />
+      <div className="container">
+        <Switch>
+          <Route path="/" exact component={AvailableBooksScreen} />
+          <Route path="/books/available" component={AvailableBooksScreen} />
+          <Route path="/books/add" component={AddBooksScreen} />
+        </Switch>
+      </div>
+    </div>
+  );
+  // Button next to each book to add it to your shelf
+};
 export default IndexScreen;

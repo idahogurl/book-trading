@@ -1,4 +1,4 @@
-import { User } from './models';
+import { User } from './db/models';
 
 /**
  * Authentication Middleware
@@ -6,8 +6,9 @@ import { User } from './models';
  * Finds a user associated with a cookie. If cookie does not exist,
  * the request is unauthenticated.
  */
-const getUser = async (req, res, next) => {
+const getUser = async function getUser(req, res, next) {
   if (req.signedCookies.token) {
+    console.log('here');
     // cookie exists
     const [id] = req.signedCookies.token.split('|');
     const user = await User.findById(id);
