@@ -3,10 +3,9 @@ import { Query } from 'react-apollo';
 import { Link } from 'react-router-dom';
 import GET_BOOKS from '../graphql/GetBooks.gql';
 import BookList from '../components/BookList';
+import AvailableBookRow from '../components/AvailableBookRow';
 
 const AvailableBooks = function AvailableBooks() {
-  const buttonContent = <span>Requests <span className="badge badge-light">2</span></span>
-
   return (
     <div>
       <h1>Available Books</h1>
@@ -14,7 +13,11 @@ const AvailableBooks = function AvailableBooks() {
       <Query query={GET_BOOKS} variables={{ where: JSON.stringify({ available: true }) }}>
         {({ data, loading, error }) => {
         if (loading) return <i className="fa fa-2x fa-spinner fa-spin" />;
-        return <BookList books={data.ownedBooks} buttonContent={buttonContent} onClick={} />;
+         return (<BookList
+           books={data.ownedBooks}
+           render={({ book }) =>
+            (<AvailableBookRow key={book.id} book={book} />)}
+         />);
         }
       }
       </Query>

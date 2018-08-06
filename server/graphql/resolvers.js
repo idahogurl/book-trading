@@ -1,5 +1,6 @@
 import GraphQLToolTypes from 'graphql-tools-types';
-import { OwnedBook, RequestedBook, Trade, User } from '../db/models';
+import { OwnedBook, Trade, User } from '../db/models';
+import goodReadsRequest from '../goodreads';
 
 const parseOrder = function parseOrder(order) {
   if (order) {
@@ -23,8 +24,7 @@ export default {
   Void: GraphQLToolTypes.Void({ name: 'Void' }),
   Mutation: {
     createOwnedBook: async (_, { input }) => {
-      const test = { ...input };
-      const ownedBook = OwnedBook.create(test);
+      const ownedBook = OwnedBook.create(input);
       return ownedBook;
     },
     deleteOwnedBook: async (_, { id }) => {
@@ -88,6 +88,10 @@ export default {
     user: async (_, { id }) => {
       const user = await User.findById({ where: { id } });
       return user;
+    },
+    goodreads: async (_, { q, field }, user) => {
+      const books = await goodReadsRequest({ q, field, userId: user.id });
+      return books;
     },
   },
 };

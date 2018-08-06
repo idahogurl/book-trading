@@ -1,0 +1,10 @@
+query goodreads($q: String, $field: String) {
+  goodreads(q: $q, field: $field) {
+    id
+    title
+    author
+    publicationYear
+    imageUrl
+    owned
+  }
+}

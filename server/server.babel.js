@@ -10,7 +10,6 @@ import { makeExecutableSchema } from 'graphql-tools';
 import getUser from './getUser';
 import resolvers from './graphql/resolvers';
 import processLogin from './login';
-import goodReadsRequest from './goodreads';
 
 dotenv.config();
 
@@ -49,10 +48,6 @@ app.use('/logout', (req, res, next) => {
     res.clearCookie('token');
   }
   next();
-});
-
-app.post('/goodreads', (req, res, next) => {
-  goodReadsRequest(req, res, next);
 });
 
 // Always return the main index.html, so react-router renders the route in the client

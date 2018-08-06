@@ -8,7 +8,6 @@ import { User } from './db/models';
  */
 const getUser = async function getUser(req, res, next) {
   if (req.signedCookies.token) {
-    console.log('here');
     // cookie exists
     const [id] = req.signedCookies.token.split('|');
     const user = await User.findById(id);

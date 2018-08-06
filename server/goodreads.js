@@ -6,10 +6,10 @@ import { OwnedBook } from './db/models';
 
 dotenv.config();
 
-const goodReadsRequest = async function goodReadsRequest(req, res, next) {
+const goodReadsRequest = async function goodReadsRequest({ q, field, userId }) {
   try {
     const apiUrl = 'https://www.goodreads.com/search';
-    const { field, q, userId } = req.body;
+
     const params = {
       key: process.env.GOODREADS_KEY,
       q,
@@ -43,9 +43,10 @@ const goodReadsRequest = async function goodReadsRequest(req, res, next) {
       books[index].owned = true;
     });
 
-    res.json(books);
+    return books;
   } catch (e) {
-    next(e);
+    console.error(e);
+    throw e;
   }
 };
 

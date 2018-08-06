@@ -73,6 +73,20 @@ type Query {
   user(
     id: String
   ): User
+
+  goodreads(
+    q: String
+    field: String
+  ): [Book]
+}
+
+type Book {
+  id: String
+  title: String
+  author: String
+  imageUrl: String
+  publicationYear: Int
+  owned: Boolean
 }
 
 type Trade {
