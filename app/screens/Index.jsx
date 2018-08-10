@@ -4,6 +4,7 @@ import { Switch, Route } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import AddBooksScreen from './AddBooks';
 import AvailableBooksScreen from './AvailableBooks';
+import RequestTradeScreen from './RequestTrade';
 
 const IndexScreen = function IndexScreen() {
   return (
@@ -14,6 +15,7 @@ const IndexScreen = function IndexScreen() {
           <Route path="/" exact component={AvailableBooksScreen} />
           <Route path="/books/available" component={AvailableBooksScreen} />
           <Route path="/books/add" component={AddBooksScreen} />
+          <Route path="/requests/new" component={RequestTradeScreen} />
         </Switch>
       </div>
     </div>

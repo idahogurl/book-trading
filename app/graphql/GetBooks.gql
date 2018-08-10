@@ -5,6 +5,7 @@ query getBooks($where: JSON) {
     author
     publicationYear
     imageUrl
+    requestCount
     user {
       id
       screenName

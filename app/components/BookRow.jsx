@@ -7,7 +7,7 @@ class BookRow extends PureComponent {
     const { book, button } = this.props;
     return (
       <li className="list-group-item d-flex">
-        <div className="d-flex justify-content-between w-100">
+        <div className="d-flex justify-content-between">
           <Book book={book} />
           <div className="float-right">
             {button}

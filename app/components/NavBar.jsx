@@ -1,59 +1,37 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 import LoginButton from '../components/LoginButton';
 import LogoutButton from '../components/LogoutButton';
-// Available books has request trade
 
-import { processResponse } from '../utils/facebookResponse';
+import processResponse from '../utils/facebookResponse';
 
-const initializeUser = function initializeUser() {
-  if ('currentUser' in sessionStorage) {
-    return sessionStorage.getItem('currentUser');
-  }
-  return null;
+const onLogin = async function onLogin(response) {
+  const { id: userId } = response;
+  sessionStorage.setItem('currentUser', userId);
+
+  await processResponse(response);
+  window.location.reload();
 };
 
-class NavBar extends Component {
-  state = {
-    userId: initializeUser(),
-  }
+const onLogout = function onLogout() {
+  sessionStorage.clear();
+  window.location.reload();
+};
 
-  onLogin = this.onLogin.bind(this)
-  onLogout = this.onLogout.bind(this)
-
-  async onLogin(response) {
-    const { id: userId } = response;
-    sessionStorage.setItem('currentUser', userId);
-
-    await processResponse(response);
-    this.setState({ userId });
-  }
-
-  onLogout() {
-    sessionStorage.clear();
-    this.setState({ userId: null });
-  }
-
-  render() {
-    const { userId } = this.state;
-    return (
-      <header className="navbar">
-        <NavLink to="/books/owned">My Books</NavLink>
-        <NavLink to="/books/add">Add Books</NavLink>
-        <NavLink to="/books/available">Available Books</NavLink>
-        <NavLink to="/books/requests">My Requests</NavLink>
-        <NavLink to="/profile">Profile</NavLink>
-        {userId === null ?
-          <LoginButton onLogin={this.onLogin} /> : <LogoutButton onLogout={this.onLogout} /> }
-      </header>
-    );
-  }
-}
+const NavBar = function NavBar() {
+  return (
+    <header className="navbar">
+      <NavLink to="/books/owned">My Books</NavLink>
+      <NavLink to="/books/add">Add Books</NavLink>
+      <NavLink to="/books/available">Available Books</NavLink>
+      <NavLink to="/requests">My Requests</NavLink>
+      <NavLink to="/requests/new">Create Request</NavLink>
+      <NavLink to="/profile">Profile</NavLink>
+      {'currentUser' in sessionStorage === false ?
+        <LoginButton onLogin={onLogin} /> : <LogoutButton onLogout={onLogout} /> }
+    </header>
+  );
+};
 
 export default NavBar;
-// Use same BookList component but routes are filters
-// Create My Books Row
-// Create AvailableBooks Row
-// Create RequestedBooks Row
-// Have Add Book button in My Books
 

@@ -1,7 +1,6 @@
 import axios from 'axios';
-import onError from '../utils/onError';
 
-export function processResponse(response) {
+const processResponse = function processResponse(response) {
   const {
     id, name, email,
   } = response;
@@ -16,8 +15,6 @@ export function processResponse(response) {
   };
 
   return axios.post('/auth/facebook', user);
-}
+};
 
-export function handleError(error) {
-  onError(error);
-}
+export default processResponse;

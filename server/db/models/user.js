@@ -1,5 +1,5 @@
 export default function (sequelize, DataTypes) {
-  return sequelize.define('User', {
+  const User = sequelize.define('User', {
     id: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -28,4 +28,10 @@ export default function (sequelize, DataTypes) {
     timestamps: true,
     underscored: true,
   });
+
+  User.associate = ({ OwnedBook }) => {
+    User.hasMany(OwnedBook);
+  };
+
+  return User;
 }

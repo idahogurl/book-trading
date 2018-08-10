@@ -10,10 +10,12 @@ module.exports = {
         primaryKey: true,
       },
 
-      book_id: {
+      user_id: {
         type: Sequelize.STRING,
-        references: { model: 'owned_books', key: 'id' },
         allowNull: false,
+        references: {
+          references: { model: 'users', key: 'id' },
+        },
       },
 
       created_at: {

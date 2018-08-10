@@ -1,5 +1,5 @@
 import GraphQLToolTypes from 'graphql-tools-types';
-import { OwnedBook, Trade, User } from '../db/models';
+import db, { OwnedBook, Trade, TradeBook, User } from '../db/models';
 import goodReadsRequest from '../goodreads';
 
 const parseOrder = function parseOrder(order) {
@@ -33,18 +33,36 @@ export default {
       });
       return id;
     },
-    createTrade: async (_, { bookId, userId }) => {
+    createTrade: async (_, { userId }) => {
       const trade = Trade.create({
-        bookId,
         userId,
       });
       return trade;
     },
-    deleteTrade: async (_, { bookId, userId }) => {
+    updateTrade: async (_, { id, status }) => {
+      const trade = Trade.findById(id);
+      trade.setStatus(status);
+      trade.update();
+    },
+    deleteTrade: async (_, { id }) => {
+      // delete all the trade books
       await Trade.destroy({
-        where: { bookId, userId },
+        where: { id },
       });
-      return { bookId, userId };
+      return { id };
+    },
+    createTradeBook: async (_, { tradeId, bookId }) => {
+      const tradeBook = await TradeBook.create({
+        tradeId,
+        bookId,
+      });
+      return tradeBook;
+    },
+    deleteTradeBook: async (_, { tradeId, bookId }) => {
+      await Trade.destroy({
+        where: { tradeId, bookId },
+      });
+      return { tradeId, bookId };
     },
     createUser: async (_, { id, fullName, location }) => {
       const user = User.create({
@@ -62,7 +80,21 @@ export default {
     ownedBooks: async (_, {
       limit, order, where, offset,
     }) => {
-      const books = await OwnedBook.findAll(limit, parseOrder(order), parseWhere(where), offset);
+      const books = await OwnedBook.findAll({
+        limit,
+        order: parseOrder(order),
+        where: parseWhere(where),
+        offset,
+        group: 'OwnedBook.id',
+        include: [
+          { model: TradeBook },
+        ],
+        attributes: {
+          include: [
+            [db.sequelize.fn('COUNT', db.sequelize.col('TradeBooks.book_id')), 'requestCount'],
+          ],
+        },
+      });
       return books;
     },
     ownedBook: async (_, { id }) => {
@@ -92,6 +124,12 @@ export default {
     goodreads: async (_, { q, field }, user) => {
       const books = await goodReadsRequest({ q, field, userId: user.id });
       return books;
+    },
+  },
+  OwnedBook: {
+    user: async (book) => {
+      const user = await book.getUser();
+      return user;
     },
   },
 };

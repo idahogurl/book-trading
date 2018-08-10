@@ -1,18 +1,15 @@
 export default function (sequelize, DataTypes) {
-  return sequelize.define('Trade', {
+  const Trade = sequelize.define('Trade', {
     id: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
       allowNull: false,
       primaryKey: true,
     },
-    bookId: {
-      type: DataTypes.TEXT,
+    userId: {
+      type: DataTypes.STRING,
       allowNull: false,
-      references: {
-        model: 'OwnedBook',
-        key: 'id',
-      },
-      field: 'book_id',
+      field: 'user_id',
+      references: { model: 'User', key: 'id' },
     },
     status: {
       type: DataTypes.INTEGER,
@@ -24,4 +21,10 @@ export default function (sequelize, DataTypes) {
     timestamps: true,
     underscored: true,
   });
+
+  Trade.associate = ({ OwnedBook }) => {
+    Trade.belongsTo(OwnedBook, { foreignKey: 'book_id' });
+  };
+
+  return Trade;
 }

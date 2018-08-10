@@ -1,30 +1,22 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 
 import BookRow from './BookRow';
 
-class AddBookRow extends PureComponent {
-  onClick = this.onClick.bind(this)
-  onClick() {
-    const { book } = this.props;
-    const userId = sessionStorage.getItem('currentUser');
-    // createMutation({ variables: { input: { ...book, userId } } });
-  }
+const AvailableBookRow = function AvailableBookRow(props) {
+  const { book } = props;
+  const button = (
+    <span>
+      Requests <span className="badge badge-light">{book.requestCount ? book.requestCount : 0}</span>
+    </span>);
 
-  render() {
-    const { book } = this.props;
-    const button = <span>Requests <span className="badge badge-light">2</span></span>;
-
-
-    return (
-      <div><BookRow book={book} button={button} /></div>
-    );
-  }
-}
-
-AddBookRow.propTypes = {
-  book: PropTypes.shape.isRequired,
+  return (
+    <div><BookRow book={book} button={button} /></div>
+  );
 };
 
-export default AddBookRow;
+AvailableBookRow.propTypes = {
+  book: PropTypes.shape({}).isRequired,
+};
+
+export default AvailableBookRow;

@@ -14,7 +14,7 @@ const fields = [
   { id: 'all', name: 'ISBN' },
 ];
 
-export default class AddBooks extends React.Component {
+class AddBooks extends React.Component {
   state = {
     books: [],
   }
@@ -81,3 +81,4 @@ export default class AddBooks extends React.Component {
   }
 }
 
+export default AddBooks;
