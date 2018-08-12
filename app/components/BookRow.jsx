@@ -1,25 +1,27 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Book from './Book';
 
-class BookRow extends PureComponent {
-  render() {
-    const { book, button } = this.props;
-    return (
-      <li className="list-group-item d-flex">
-        <div className="d-flex justify-content-between">
-          <Book book={book} />
-          <div className="float-right">
-            {button}
-          </div>
+const BookRow = function BookRow(props) {
+  const { book, button } = props;
+  return (
+    <li className="list-group-item d-flex">
+      <div className="d-flex justify-content-between">
+        <Book book={book} />
+        <div className="float-right">
+          {button}
         </div>
-      </li>);
-  }
-}
+      </div>
+    </li>);
+};
 
 BookRow.propTypes = {
   book: PropTypes.shape({}).isRequired,
-  button: PropTypes.element.isRequired,
+  button: PropTypes.element,
+};
+
+BookRow.defaultProps = {
+  button: null,
 };
 
 export default BookRow;

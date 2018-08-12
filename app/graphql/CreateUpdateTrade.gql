@@ -1,5 +1,0 @@
-mutation createTrade($books: [String]) {
-  createTrade(books: $books) {
-    
-  }
-}

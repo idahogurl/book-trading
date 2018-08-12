@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Query, Mutation } from 'react-apollo';
+import { Query, graphql } from 'react-apollo';
 import { differenceBy } from 'lodash';
 
 import GET_BOOKS from '../graphql/GetBooks.gql';
-
-import { notify, onError } from '../utils/notifications';
+import CREATE_TRADE from '../graphql/CreateTrade.gql';
+import { onError } from '../utils/notifications';
 
 import BookList from '../components/BookList';
 import TradeBookRow from '../components/TradeBookRow';
@@ -19,9 +19,10 @@ class RequestTrade extends Component {
   // invalid all pending trades containing these books when accepted
 
   onCreateTrade = this.onCreateTrade.bind(this)
-  onCreateTrade() {
+  async onCreateTrade() {
     // Do both sides have selections? (check for books not owned by current user)
     const { userId, books } = this.state;
+
     const otherUser = books.filter(b => b.userId !== userId);
 
     if (books.length && otherUser.length) {
@@ -29,12 +30,13 @@ class RequestTrade extends Component {
       const firstId = otherUser[0].userId;
       otherUser.every(o => o.userId === firstId);
       if (otherUser.every(o => o.userId === firstId)) {
-        // go
+        const { createTrade } = this.props;
+        await createTrade({ variables: { bookIds: books.map(b => b.id) } });
       } else {
-        notify('Choose selections from only one user');
+        onError('Choose selections from only one user', false);
       }
     } else {
-      notify('You need to made selections from both sides');
+      onError('You need to made selections from both sides', false);
     }
   }
 
@@ -122,4 +124,4 @@ RequestTrade.propTypes = {
   }).isRequired,
 };
 
-export default RequestTrade;
+export default graphql(CREATE_TRADE, { name: 'createTrade' })(RequestTrade);

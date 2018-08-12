@@ -6,7 +6,7 @@ type Mutation {
   createOwnedBook(input: CreateOwnedBookInput): OwnedBook
   updateOwnedBook(id: String, userId: String): OwnedBook
   deleteOwnedBook(id: String!): String
-  createTrade(userId: String): Trade
+  createTrade(bookIds: [String]): CreateTradeResult
   updateTrade(id: String, status: Int): Trade
   deleteTrade(id: String!): Trade
   createTradeBook(tradeId: String, bookId: String): TradeBook
@@ -23,6 +23,11 @@ input CreateOwnedBookInput {
   imageUrl: String
   publicationYear: Int
   available: Boolean
+}
+
+type CreateTradeResult {
+  trade: Trade
+  tradeBooks: [TradeBook]
 }
 
 type OwnedBook {
@@ -98,13 +103,18 @@ type Trade {
   id: String!
   userId: String
   status: Int
-  ownedBook: OwnedBook
+  createdAt: Date
+  updatedAt: Date
+  user: User
+  tradeBooks: [TradeBook]
 }
 
 type TradeBook {
-  tradeId: String!
-  bookId: String!
-  Trade: Trade
+  id: String!
+  tradeId: String
+  bookId: String
+  trade: Trade
+  ownedBook: OwnedBook
 }
 
 type User {

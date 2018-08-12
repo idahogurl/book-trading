@@ -1,6 +1,11 @@
 export default function (sequelize, DataTypes) {
-  return sequelize.define('TradeBook', {
-    trade_id: {
+  const TradeBook = sequelize.define('TradeBook', {
+    id: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      primaryKey: true,
+    },
+    tradeId: {
       type: DataTypes.STRING,
       allowNull: false,
       references: {
@@ -9,7 +14,7 @@ export default function (sequelize, DataTypes) {
       },
       field: 'trade_id',
     },
-    book_id: {
+    bookId: {
       type: DataTypes.STRING,
       allowNull: false,
       references: {
@@ -23,4 +28,11 @@ export default function (sequelize, DataTypes) {
     timestamps: true,
     underscored: true,
   });
+
+  TradeBook.associate = ({ OwnedBook, Trade }) => {
+    TradeBook.belongsTo(OwnedBook, { foreignKey: 'book_id' });
+    TradeBook.belongsTo(Trade);
+  };
+
+  return TradeBook;
 }

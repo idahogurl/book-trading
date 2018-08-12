@@ -20,7 +20,7 @@ const BookList = function BookList(props) {
             <ul className="list-group">
               {props.books.map(b => props.render({ book: b }))}
             </ul>
-            : 'Log in to view your books'
+            : <span style={{ fontSize: '1.5rem' }}>Log in to view your books</span>
           }
         </div>)
   } />);

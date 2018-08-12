@@ -22,8 +22,9 @@ export default function (sequelize, DataTypes) {
     underscored: true,
   });
 
-  Trade.associate = ({ OwnedBook }) => {
-    Trade.belongsTo(OwnedBook, { foreignKey: 'book_id' });
+  Trade.associate = ({ User, TradeBook }) => {
+    Trade.belongsTo(User);
+    Trade.hasMany(TradeBook);
   };
 
   return Trade;

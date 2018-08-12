@@ -1,0 +1,12 @@
+mutation createTrade($bookIds: [String]) {
+  createTrade(bookIds: $bookIds) {
+    trade {
+      id
+      status
+    }
+    tradeBooks {
+      id
+      bookId
+    }
+  }
+}

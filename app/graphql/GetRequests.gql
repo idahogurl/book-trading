@@ -1,0 +1,24 @@
+query getRequests {
+  trades {
+    id
+    userId
+    status
+    createdAt
+    tradeBooks
+      {
+        id
+        ownedBook {
+          id
+          title
+          author
+          publicationYear
+          imageUrl
+          user {
+            id
+            screenName
+            location
+          }
+        }
+      }
+  }
+}

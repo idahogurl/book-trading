@@ -29,8 +29,9 @@ export default function (sequelize, DataTypes) {
     underscored: true,
   });
 
-  User.associate = ({ OwnedBook }) => {
+  User.associate = ({ OwnedBook, Trade }) => {
     User.hasMany(OwnedBook);
+    User.hasMany(Trade);
   };
 
   return User;

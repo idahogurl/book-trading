@@ -1,9 +1,9 @@
 mutation createOwnedBook($input: CreateOwnedBookInput) {
   createOwnedBook(input: $input) {
-    id,
-    title,
-    author,
-    publicationYear,
+    id
+    title
+    author
+    publicationYear
     imageUrl
   }
 }
