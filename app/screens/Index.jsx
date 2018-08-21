@@ -6,6 +6,8 @@ import AddBooksScreen from './AddBooks';
 import AvailableBooksScreen from './AvailableBooks';
 import RequestTradeScreen from './RequestTrade';
 import MyRequestsScreen from './MyRequests';
+import MyBooksScreen from './MyBooks';
+import ProfileScreen from './Profile';
 
 const IndexScreen = function IndexScreen() {
   return (
@@ -16,8 +18,10 @@ const IndexScreen = function IndexScreen() {
           <Route path="/" exact component={AvailableBooksScreen} />
           <Route path="/books/available" component={AvailableBooksScreen} />
           <Route path="/books/add" component={AddBooksScreen} />
-          <Route path="/requests" exact component={MyRequestsScreen} />
+          <Route path="/books/owned" component={MyBooksScreen} />
+          <Route path="/requests/my" component={MyRequestsScreen} />
           <Route path="/requests/new" component={RequestTradeScreen} />
+          <Route path="/profile" component={ProfileScreen} />
         </Switch>
       </div>
     </div>

@@ -1,27 +1,24 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import cs from 'classnames';
-import BookRow from './BookRow';
+import Book from './Book';
 
-class TradeBookRow extends PureComponent {
-  render() {
-    const { book, selected, onClick } = this.props;
-    // save or remove
-    const button = (
-      <button
-        id={book.id}
-        className={cs('btn ml-3', { 'btn-danger': selected }, { 'btn-primary': !selected })}
-        title={selected ? 'Remove' : 'Add'}
-        onClick={() => { onClick({ id: book.id, userId: book.user.id }); }}
-      >
-        <i className={cs('fa', { 'fa-close': selected }, { 'fa-plus': !selected })} aria-hidden="true" />
-      </button>);
+const TradeBookRow = function TradeBookRow(props) {
+  const { book, selected, onClick } = props;
+  // save or remove
+  const button = (
+    <button
+      id={book.id}
+      className={cs('btn ml-3', { 'btn-danger': selected }, { 'btn-primary': !selected })}
+      title={selected ? 'Remove' : 'Add'}
+      onClick={() => { onClick({ id: book.id, userId: book.user.id }); }}
+    >
+      <i className={cs('fa', { 'fa-close': selected }, { 'fa-plus': !selected })} aria-hidden="true" />
+      {selected ? ' Remove' : ' Add'}
+    </button>);
 
-    return (
-      <div><BookRow book={book} button={button} /></div>
-    );
-  }
-}
+  return <Book book={book} button={button} />;
+};
 
 TradeBookRow.propTypes = {
   book: PropTypes.shape({}).isRequired,

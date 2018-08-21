@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import cs from 'classnames';
 
 import { notify } from '../utils/notifications';
-import BookRow from './BookRow';
+import Book from './Book';
 
 class AddBookRow extends Component {
   state = {
@@ -43,9 +43,7 @@ class AddBookRow extends Component {
       <button onClick={this.onClick} className={cs('btn btn-primary', { disabled: isLoggedIn && book.owned })}>
         {isLoggedIn && book.owned ? 'Book is Owned' : 'Add to Owned'}
       </button>);
-    return (
-      <div><BookRow book={book} button={button} /></div>
-    );
+    return <Book book={book} button={button} />;
   }
 }
 

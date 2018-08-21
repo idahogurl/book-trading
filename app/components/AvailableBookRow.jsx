@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import BookRow from './BookRow';
+import Book from './Book';
 
 const AvailableBookRow = function AvailableBookRow(props) {
   const { book } = props;
@@ -10,9 +10,7 @@ const AvailableBookRow = function AvailableBookRow(props) {
       Requests <span className="badge badge-light">{book.requestCount ? book.requestCount : 0}</span>
     </span>);
 
-  return (
-    <div><BookRow book={book} button={button} /></div>
-  );
+  return <Book book={book} button={button} />;
 };
 
 AvailableBookRow.propTypes = {

@@ -1,6 +1,7 @@
 import GraphQLToolTypes from 'graphql-tools-types';
-import db, { OwnedBook, Trade, TradeBook, User } from '../db/models';
+import { Op } from 'sequelize';
 import uuid from 'uuid/v4';
+import db, { OwnedBook, Trade, TradeBook, User } from '../db/models';
 import goodReadsRequest from '../goodreads';
 
 const parseOrder = function parseOrder(order) {
@@ -19,6 +20,19 @@ const parseWhere = function parseWhere(where) {
   return {};
 };
 
+const voidTrade = function voidTrade(bookIds, transaction) {
+  return Trade.update({ status: 3 }, {
+    where: {
+      id: {
+        [Op.in]:
+          db.sequelize.literal(`(SELECT trade_id FROM trade_books WHERE book_id IN ('${bookIds}'))`),
+      },
+      status: 0,
+    },
+    transaction,
+  });
+};
+
 export default {
   JSON: GraphQLToolTypes.JSON({ name: 'JSON' }),
   Date: GraphQLToolTypes.Date({ name: 'Date' }),
@@ -28,48 +42,52 @@ export default {
       const ownedBook = OwnedBook.create(input);
       return ownedBook;
     },
-    deleteOwnedBook: async (_, { id }) => {
-      await OwnedBook.destroy({
-        where: { id },
-      });
-      return id;
-    },
-    createTrade: async (_, { bookIds }, user) => {
-      const trade = { id: uuid(), userId: user.id, status: 0 };
+    deleteOwnedBook: (_, { id }) => db.sequelize.transaction(async (transaction) => {
+      const ownedBook = await OwnedBook.findById(id, { transaction });
+      ownedBook.set('available', false);
+      await ownedBook.save({ transaction });
+
+      await voidTrade(id, transaction);
+    }).catch((err) => {
+      console.error(err);
+      throw err;
+    }),
+    createTrade: (_, { bookIds }, user) => {
+      const trade = {
+        id: uuid(), userId: user.id, status: 0, createdAt: new Date(),
+      };
       const tradeBooks = bookIds.map(bookId => ({ id: uuid(), tradeId: trade.id, bookId }));
 
-      return db.sequelize.transaction(transaction => Trade.create(trade, { transaction })
-        .then(() => TradeBook.bulkCreate(tradeBooks, { transaction })))
-        .then(() => ({ trade, tradeBooks }))
+      return db.sequelize.transaction(async (transaction) => {
+        await Trade.create(trade, { transaction });
+        await TradeBook.bulkCreate(tradeBooks, { transaction });
+        return { trade, tradeBooks };
+      })
         .catch((err) => {
           console.error(err);
           throw err;
         });
     },
     updateTrade: async (_, { id, status }) => {
-      const trade = Trade.findById(id);
-      trade.setStatus(status);
-      trade.update();
-    },
-    deleteTrade: async (_, { id }) => {
-      // delete all the trade books
-      await Trade.destroy({
-        where: { id },
-      });
-      return { id };
-    },
-    createTradeBook: async (_, { tradeId, bookId }) => {
-      const tradeBook = await TradeBook.create({
-        tradeId,
-        bookId,
-      });
-      return tradeBook;
-    },
-    deleteTradeBook: async (_, { tradeId, bookId }) => {
-      await Trade.destroy({
-        where: { tradeId, bookId },
-      });
-      return { tradeId, bookId };
+      const trade = await Trade.findById(id);
+      trade.set('status', status);
+
+      // Void pending trades containing these books when trade is accepted
+      if (status === 1) {
+        return db.sequelize.transaction(async (transaction) => {
+          await trade.save({ transaction });
+          const tradeBooks = await trade.getTradeBooks({ transaction });
+          const bookIds = tradeBooks.map(b => b.bookId).join('\',\'');
+          return voidTrade(bookIds, transaction);
+        })
+          .catch((err) => {
+            console.error(err);
+            throw err;
+          });
+      }
+      await trade.save();
+
+      return trade;
     },
     createUser: async (_, { id, fullName, location }) => {
       const user = User.create({
@@ -121,11 +139,11 @@ export default {
     users: async (_, {
       limit, order, where, offset,
     }) => {
-      const books = await User.findAll(limit, parseOrder(order), parseWhere(where), offset);
-      return books;
+      const users = await User.findAll(limit, parseOrder(order), parseWhere(where), offset);
+      return users;
     },
     user: async (_, { id }) => {
-      const user = await User.findById({ where: { id } });
+      const user = await User.findById(id);
       return user;
     },
     goodreads: async (_, { q, field }, user) => {

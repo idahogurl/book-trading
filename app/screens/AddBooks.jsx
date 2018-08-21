@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Formik } from 'formik';
 import { Mutation, ApolloConsumer } from 'react-apollo';
 
@@ -23,8 +23,8 @@ class AddBooks extends React.Component {
     return (
       <ApolloConsumer>
         {client => (
-          <div>
-          Add Books to Owned
+          <Fragment>
+            <h1>Add Books to Owned</h1>
             <Formik
               initialValues={{ q: 'Five Kingdoms', field: 'title' }}
               onSubmit={async (values) => {
@@ -33,7 +33,7 @@ class AddBooks extends React.Component {
                 this.setState({ books: data.goodreads });
               }}
               render={({ values, handleChange, handleSubmit }) => (
-                <div className="container">
+                <div>
                   <form onSubmit={handleSubmit}>
                     <input
                       type="text"
@@ -68,13 +68,16 @@ class AddBooks extends React.Component {
           )}
             />
             <Mutation mutation={CREATE_MUTATION}>{createMutation => (
-              <BookList
-                books={books}
-                render={({ book }) =>
+              <div className="d-flex flex-wrap">
+                <BookList
+                  books={books}
+                  render={({ book }) =>
                     (<AddBookRow key={book.id} book={book} createMutation={createMutation} />)}
-              />)}
+                />
+              </div>
+              )}
             </Mutation>
-          </div>
+          </Fragment>
         )}
       </ApolloConsumer>
     );

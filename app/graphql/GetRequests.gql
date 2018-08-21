@@ -4,6 +4,7 @@ query getRequests {
     userId
     status
     createdAt
+    updatedAt
     tradeBooks
       {
         id

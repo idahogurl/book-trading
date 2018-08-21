@@ -5,12 +5,9 @@ scalar Void
 type Mutation {
   createOwnedBook(input: CreateOwnedBookInput): OwnedBook
   updateOwnedBook(id: String, userId: String): OwnedBook
-  deleteOwnedBook(id: String!): String
+  deleteOwnedBook(id: String!): Void
   createTrade(bookIds: [String]): CreateTradeResult
   updateTrade(id: String, status: Int): Trade
-  deleteTrade(id: String!): Trade
-  createTradeBook(tradeId: String, bookId: String): TradeBook
-  deleteTradeBook(tradeId: String!, bookId: String!) : TradeBook
   createUser(id: String, fullName: String, location: String): User
   updateUser(id: String, fullName: String, location: String): User
 }

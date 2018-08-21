@@ -1,0 +1,6 @@
+mutation updateTrade($id: String, $status: Int) {
+  updateTrade(id: $id, status: $status) {
+    id
+    status
+  }
+}

@@ -1,29 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FelaComponent } from 'react-fela';
-// Show No Results Found
 
-const style = {
-  backgroundColor: 'Gainsboro',
-  padding: '10px',
-  height: '100%',
-  color: 'dimgray',
-  textAlign: 'center',
-};
 const BookList = function BookList(props) {
-  return (
-    <FelaComponent
-      style={style}
-      render={({ className }) => (
-        <div className={className}>
-          {props.books.length !== 0 || 'currentUser' in sessionStorage ?
-            <ul className="list-group">
-              {props.books.map(b => props.render({ book: b }))}
-            </ul>
-            : <span style={{ fontSize: '1.5rem' }}>Log in to view your books</span>
-          }
-        </div>)
-  } />);
+  const noBooks = (
+    <div className="card">
+      <div className="card-body">
+        <div className="card-text">Log in to view your books</div>
+      </div>
+    </div>);
+
+  return props.books.length !== 0 || 'currentUser' in sessionStorage ?
+    props.books.map(b => props.render({ book: b }))
+    : noBooks;
 };
 
 BookList.propTypes = {

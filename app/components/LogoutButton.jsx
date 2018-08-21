@@ -4,9 +4,7 @@ import FacebookButton from './FacebookButton';
 
 const LogoutButton = function LogoutButton(props) {
   return (
-    <FacebookButton onClick={props.onLogout}>
-        Log Out
-    </FacebookButton>
+    <FacebookButton onClick={props.onLogout}>Log Out</FacebookButton>
   );
 };
 
