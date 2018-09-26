@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import cs from 'classnames';
+import uuid from 'uuid/v4';
 
 import { notify } from '../utils/notifications';
 import Book from './Book';
@@ -20,7 +21,8 @@ class AddBookRow extends Component {
       } = book;
 
       const input = {
-        id,
+        id: uuid(),
+        bookId: id,
         title,
         author,
         imageUrl,

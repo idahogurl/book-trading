@@ -22,6 +22,19 @@ module.exports = {
         allowNull: false,
       },
 
+      user_id: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        references: { model: 'users', key: 'id' },
+        field: 'user_id',
+      },
+
+      is_requester: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
+
       created_at: {
         type: Sequelize.DATE,
         allowNull: false,

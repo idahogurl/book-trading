@@ -23,6 +23,21 @@ export default function (sequelize, DataTypes) {
       },
       field: 'book_id',
     },
+    userId: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      references: {
+        model: 'User',
+        key: 'id',
+      },
+      field: 'user_id',
+    },
+    isRequester: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+      field: 'is_requester',
+    },
   }, {
     tableName: 'trade_books',
     timestamps: true,

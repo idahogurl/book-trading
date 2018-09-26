@@ -52,6 +52,13 @@ module.exports = {
         allowNull: false,
       },
 
+    }, {
+      indexes: [{
+        name: 'owned_book_unique_index',
+        method: 'BTREE',
+        fields: ['book_id', 'user_id'],
+        unique: true,
+      }],
     });
   },
 

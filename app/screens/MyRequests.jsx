@@ -55,37 +55,37 @@ class MyRequests extends PureComponent {
                 <strong>Updated:</strong> {new Date(t.updatedAt).toLocaleString('en-US')}<br />
 
                 {t.status === 0 && !isRequester &&
-                <Fragment>
-                  <button className="btn btn-success mt-3" onClick={() => { this.onClick(t.id, 1); }}>Accept</button>
-                  {' '}
-                  <button className="btn btn-danger mt-3" onClick={() => { this.onClick(t.id, 2); }}>Reject</button>
-                </Fragment>
+                  <Fragment>
+                    <button className="btn btn-success mt-3" onClick={() => { this.onClick(t.id, 1); }}>Accept</button>
+                    {' '}
+                    <button className="btn btn-danger mt-3" onClick={() => { this.onClick(t.id, 2); }}>Reject</button>
+                  </Fragment>
                 }
-
-                <h2 className="h4 w-100 mt-2">{`${requesterName} ${isRequester ? 'want' : 'wants'}`}</h2>
-                <div className="d-flex flex-wrap">
-                  <BookList
-                    books={isRequester ? otherUserBooks : currentUserBooks}
-                    render={({ book }) =>
-                (<Book
-                  key={book.id}
-                  book={book}
-                />)}
-                  />
-                </div>
-
-                <h2 className="h4 w-100 mt-2">{`${requesterName} will give`}</h2>
-                <div className="d-flex flex-wrap">
-                  <BookList
-                    books={isRequester ? currentUserBooks : otherUserBooks}
-                    render={({ book }) =>
-                (<Book key={book.id} book={book} />)}
-                  />
+                <div className="d-flex">
+                  <div>
+                    <h2 className="h4 w-100 mt-2">{`${requesterName} ${isRequester ? 'want' : 'wants'}`}</h2>
+                    <BookList
+                      books={isRequester ? otherUserBooks : currentUserBooks}
+                      render={({ book }) =>
+                          (<Book
+                            key={book.id}
+                            book={book}
+                          />)}
+                    />
+                  </div>
+                  <div>
+                    <h2 className="h4 w-100 mt-2">{`${requesterName} will give`}</h2>
+                    <BookList
+                      books={isRequester ? currentUserBooks : otherUserBooks}
+                      render={({ book }) =>
+                      (<Book key={book.id} book={book} />)}
+                    />
+                  </div>
                 </div>
               </div>
               );
-        });
-      }}
+          });
+        }}
         </Query>
       </Fragment>
     );

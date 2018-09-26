@@ -2,10 +2,10 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import RouterPropsTypes from 'react-router-prop-types';
 import { Query, graphql } from 'react-apollo';
-import { differenceBy } from 'lodash';
 
 import GET_BOOKS from '../graphql/GetBooks.gql';
 import CREATE_TRADE from '../graphql/CreateTrade.gql';
+
 import { onError } from '../utils/notifications';
 
 import BookList from '../components/BookList';
@@ -56,62 +56,58 @@ class RequestTrade extends Component {
   render() {
     const { userId, books } = this.state;
     return (
-      <Query query={GET_BOOKS} variables={{ where: JSON.stringify({ userId }) }} fetchPolicy="network-only">
-        {({ data: dataOne, loading: loadingOne, error: errorOne }) => {
-          if (errorOne) {
-            onError(errorOne);
+
+      <Query query={GET_BOOKS} variables={{ where: JSON.stringify({ available: true }) }} fetchPolicy="network-only">
+        {({ data, loading, error }) => {
+          if (error) {
+            onError(error);
             return null;
           }
 
-           return (
-             <Query query={GET_BOOKS} variables={{ where: JSON.stringify({ available: true }) }} fetchPolicy="network-only">
-               {({ data: dataTwo, loading: loadingTwo, error: errorTwo }) => {
-              if (errorTwo) {
-                onError(errorTwo);
-                return null;
-              }
+          if (loading) return <i className="fa fa-2x fa-spinner fa-spin" />;
 
-              if (loadingOne || loadingTwo) return <i className="fa fa-2x fa-spinner fa-spin" />;
+          const myBooks = data.ownedBooks.filter(o => o.userId === userId);
+          const availableBooks = data.ownedBooks.filter(o => o.userId !== userId);
 
-              // Remove my books from available
-              const availableBooks = differenceBy(dataTwo.ownedBooks, dataOne.ownedBooks, 'id');
-
-              return (
-                <Fragment>
-                  <h1>Create Trade</h1>
-                  <div className="m-auto" style={{ width: '38em' }}>
-                    <div className="text-center d-inline-block">
-                      <h2 className="h3">My Books</h2>
-                      <BookList
-                        books={dataOne.ownedBooks}
-                        render={({ book }) =>
-                        (<TradeBookRow
-                          key={book.id}
-                          book={book}
-                          onClick={this.onClick}
-                          selected={books.findIndex(b => b.id === book.id) !== -1}
-                        />)}
-                      />
-                    </div>
-                    <div className="text-center d-inline-block">
-                      <h2 className="h3">Available Books</h2>
-                      <BookList
-                        books={availableBooks}
-                        render={({ book }) =>
-                        (<TradeBookRow
-                          key={book.id}
-                          book={book}
-                          onClick={this.onClick}
-                          selected={books.findIndex(b => b.id === book.id) !== -1}
-                        />)}
-                      />
-                    </div>
+          return (
+            <Fragment>
+              <h1>Create Trade</h1>
+              <div>
+                <div className="d-flex flex-wrap">
+                  <div>
+                    <h2 className="h3 mt-4">My Books</h2>
+                    <BookList
+                      books={myBooks}
+                      render={({ book }) =>
+                    (<TradeBookRow
+                      key={book.id}
+                      book={book}
+                      onClick={this.onClick}
+                      selected={books.findIndex(b => b.id === book.id) !== -1}
+                    />)}
+                    />
                   </div>
-                  <button className="btn btn-primary d-block ml-auto mr-auto mb-2 mt-2" onClick={this.onCreateTrade}>Request Trade</button>
-                </Fragment>);
-                }}
-             </Query>);
-          }}
+                  <div>
+                    <h2 className="h3 mt-4">Available Books</h2>
+                    <BookList
+                      books={availableBooks}
+                      render={({ book }) =>
+                    (<TradeBookRow
+                      key={book.id}
+                      book={book}
+                      onClick={this.onClick}
+                      selected={books.findIndex(b => b.id === book.id) !== -1}
+                    />)}
+                    />
+                  </div>
+                </div>
+                <div style={{ width: '38em' }}>
+                  <button className="btn btn-primary mt-4 mb-4 ml-auto mr-auto d-block" onClick={this.onCreateTrade}>Request Trade</button>
+                </div>
+              </div>
+            </Fragment>);
+            }}
+
       </Query>
     );
   }
