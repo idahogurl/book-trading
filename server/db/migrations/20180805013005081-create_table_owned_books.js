@@ -1,69 +1,77 @@
 /* This file is auto-generated using https://github.com/harish2704/sequelize-migration-generator. */
 
-
 module.exports = {
   up(queryInterface, Sequelize) {
-    return queryInterface.createTable('owned_books', {
-      id: {
-        type: Sequelize.STRING,
-        allowNull: true,
-        primaryKey: true,
-      },
+    return queryInterface.createTable(
+      'owned_books',
+      {
+        id: {
+          type: Sequelize.STRING,
+          allowNull: true,
+          primaryKey: true,
+        },
 
-      user_id: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        references: { model: 'users', key: 'id' },
-      },
+        book_id: {
+          type: Sequelize.STRING,
+          allowNull: false,
+        },
 
-      title: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
+        user_id: {
+          type: Sequelize.STRING,
+          allowNull: false,
+          references: { model: 'users', key: 'id' },
+        },
 
-      author: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
+        title: {
+          type: Sequelize.STRING,
+          allowNull: false,
+        },
 
-      publication_year: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-      },
+        author: {
+          type: Sequelize.STRING,
+          allowNull: false,
+        },
 
-      image_url: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
+        publication_year: {
+          type: Sequelize.INTEGER,
+          allowNull: true,
+        },
 
-      available: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue: 1,
-      },
+        image_url: {
+          type: Sequelize.STRING,
+          allowNull: true,
+        },
 
-      created_at: {
-        type: Sequelize.DATE,
-        allowNull: false,
-      },
+        available: {
+          type: Sequelize.BOOLEAN,
+          allowNull: false,
+          defaultValue: 1,
+        },
 
-      updated_at: {
-        type: Sequelize.DATE,
-        allowNull: false,
-      },
+        created_at: {
+          type: Sequelize.DATE,
+          allowNull: false,
+        },
 
-    }, {
-      indexes: [{
-        name: 'owned_book_unique_index',
-        method: 'BTREE',
-        fields: ['book_id', 'user_id'],
-        unique: true,
-      }],
-    });
+        updated_at: {
+          type: Sequelize.DATE,
+          allowNull: false,
+        },
+      },
+      {
+        indexes: [
+          {
+            name: 'owned_book_unique_index',
+            method: 'BTREE',
+            fields: ['book_id', 'user_id'],
+            unique: true,
+          },
+        ],
+      },
+    );
   },
 
   down(queryInterface, Sequelize) {
     return queryInterface.dropTable('owned_books');
   },
 };
-

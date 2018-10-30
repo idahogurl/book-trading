@@ -1,22 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Card from './Card';
 
 const BookList = function BookList(props) {
-  const noBooks = (
-    <div className="card">
-      <div className="card-body">
-        <div className="card-text">Log in to view your books</div>
-      </div>
-    </div>);
+  const loginNotice = <Card text="Log in to view books" />;
 
-  return props.books.length !== 0 || 'currentUser' in sessionStorage ?
-    props.books.map(b => props.render({ book: b }))
-    : noBooks;
+  const { books, noResultsText } = props;
+
+  const noBooks = noResultsText ? <Card text={props.noResultsText} /> : null;
+
+  if ('currentUser' in sessionStorage === false) {
+    return loginNotice;
+  }
+  return books.length !== 0 ? books.map(b => props.render({ book: b })) : noBooks;
 };
 
 BookList.propTypes = {
   books: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   render: PropTypes.func.isRequired,
+  noResultsText: PropTypes.string,
+};
+
+BookList.defaultProps = {
+  noResultsText: 'No Books',
 };
 
 export default BookList;

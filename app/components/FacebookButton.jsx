@@ -14,13 +14,13 @@ const FacebookButton = function FacebookButton(props) {
       style={style}
       render={({ className }) => (
         <button className={classNames('btn', className)} onClick={props.onClick}>
-          <i className="fa fa-facebook-official align-middle mr-2" />
+          <img src="images/facebook-app-logo.svg" className="fb-icon align-middle mr-2" alt="" aria-hidden="true" />
           <span className="align-middle">
             {props.children}
           </span>
         </button>
       )
-    }
+      }
     />);
 };
 

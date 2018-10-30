@@ -1,5 +1,5 @@
-query goodreads($q: String, $field: String) {
-  goodreads(q: $q, field: $field) {
+query goodreads($q: String, $field: String, $userId: String) {
+  goodreads(q: $q, field: $field, userId: $userId) {
     id
     title
     author

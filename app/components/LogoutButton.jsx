@@ -1,15 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import FacebookButton from './FacebookButton';
 
-const LogoutButton = function LogoutButton(props) {
-  return (
-    <FacebookButton onClick={props.onLogout}>Log Out</FacebookButton>
-  );
+const onLogout = function onLogout() {
+  sessionStorage.clear();
+  window.location = '/';
 };
 
-LogoutButton.propTypes = {
-  onLogout: PropTypes.func.isRequired,
+const LogoutButton = function LogoutButton() {
+  return <FacebookButton onClick={onLogout}>Log Out</FacebookButton>;
 };
 
 export default LogoutButton;

@@ -36,7 +36,9 @@ const goodReadsRequest = async function goodReadsRequest({ q, field, userId }) {
     }));
 
     const ids = books.map(b => b.id);
-    const ownedBooks = await OwnedBook.findAll({ where: { bookId: { [Op.in]: ids }, userId, available: true } });
+    const ownedBooks = await OwnedBook.findAll({
+      where: { book_id: { [Op.in]: ids }, userId },
+    });
 
     ownedBooks.forEach((o) => {
       const index = books.findIndex(b => b.id === o.bookId);

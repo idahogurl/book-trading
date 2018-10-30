@@ -6,6 +6,7 @@ import GET_BOOKS from '../graphql/GetBooks.gql';
 
 import { onError } from '../utils/notifications';
 
+import Spinner from '../components/Spinner';
 import BookList from '../components/BookList';
 import AvailableBookRow from '../components/AvailableBookRow';
 
@@ -16,7 +17,7 @@ const AvailableBooks = function AvailableBooks() {
       <Query query={GET_BOOKS} variables={{ where: JSON.stringify({ available: true }) }} fetchPolicy="network-only">
         {({ data, loading, error }) => {
           if (error) onError(error);
-          if (loading) return <i className="fa fa-2x fa-spinner fa-spin" />;
+          if (loading) return <Spinner />;
 
           return (
             <Fragment>
@@ -25,7 +26,7 @@ const AvailableBooks = function AvailableBooks() {
                 <BookList
                   books={data.ownedBooks}
                   render={({ book }) =>
-              (<AvailableBookRow key={book.id} book={book} />)}
+                    (<AvailableBookRow key={book.id} book={book} />)}
                 />
               </div>
             </Fragment>);

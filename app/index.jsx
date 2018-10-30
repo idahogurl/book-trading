@@ -8,9 +8,8 @@ import { Provider } from 'react-fela';
 import { BrowserRouter } from 'react-router-dom';
 import routes from './routes';
 
-const { document } = window;
 const client = new ApolloClient({
-  uri: '/graphql',
+  uri: `http://${window.location.hostname}:4000/graphql`,
 });
 
 const renderer = createRenderer();

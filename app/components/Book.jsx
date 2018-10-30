@@ -1,28 +1,40 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import Card from './Card';
 
 const Book = function Book(props) {
-  const { book } = props;
-  return (
-    <div className="card m-2 text-center" style={{ width: '18em' }}>
-      <div className="card-img-top">
-        <img src={book.imageUrl} className="mt-2" alt="" />
-      </div>
-      <div className="card-body">
-        <div className="card-title"><strong>{book.title}</strong></div>
-        <div className="card-text"><strong>Published:</strong> {book.publicationYear}<br />
-          <strong>Author:</strong> {book.author}<br />
-          {book.user &&
-            <small className="text-muted">from {book.user.screenName}
-            &nbsp;in {book.user.location ? book.user.location : 'Unknown'}
-            </small>}
-        </div>
-      </div>
-      {props.button &&
-        <div className="card-footer">
-          {props.button}
-        </div>}
+  const { book, button } = props;
+
+  const header = (
+    <div className="card-img-top">
+      <img src={book.imageUrl} className="mt-2" alt="" />
     </div>
+  );
+
+  const text = (
+    <Fragment>
+      <strong>Publication Year:</strong>
+
+      <br />
+      {book.user && (
+        <small className="text-muted">
+          from {book.user.screenName}
+          &nbsp;in {book.user.location ? book.user.location : 'Unknown'}
+        </small>
+      )}
+    </Fragment>
+  );
+
+  const footer = button && <div className="card-footer">{button}</div>;
+
+  return (
+    <Card
+      header={header}
+      title={book.title}
+      text={text}
+      footer={footer}
+      style={{ width: '18em' }}
+    />
   );
 };
 

@@ -1,24 +1,30 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 import FacebookButton from './FacebookButton';
 
-const LoginButton = function LoginButton(props) {
+import processResponse from '../utils/facebookResponse';
+
+const onLogin = async function onLogin(response) {
+  const { id } = response;
+  sessionStorage.setItem('currentUser', id.toString());
+
+  await processResponse(response);
+  window.location.reload();
+};
+
+const LoginButton = function LoginButton() {
   return (
     <FacebookLogin
       appId="323585701513857"
-      callback={props.onLogin}
+      callback={onLogin}
       fields="name,email"
       render={({ isWorking, isLoading, onClick }) => (
         <FacebookButton onClick={onClick}>
-          {isLoading || isWorking ? 'Loading ...' : 'Log in With Facebook'}
+          {isLoading || isWorking ? 'Loading ...' : 'Log In'}
         </FacebookButton>
-        )}
-    />);
-};
-
-LoginButton.propTypes = {
-  onLogin: PropTypes.func.isRequired,
+      )}
+    />
+  );
 };
 
 export default LoginButton;

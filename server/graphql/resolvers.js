@@ -63,12 +63,12 @@ export default {
       console.error(err);
       throw err;
     }),
-    createTrade: (_, { bookIds }, user) => {
+    createTrade: (_, { bookIds, userId }) => {
       const trade = {
-        id: uuid(), userId: user.id, status: 0, createdAt: new Date(),
+        id: uuid(), userId, status: 0, createdAt: new Date(),
       };
       const tradeBooks = bookIds.map(bookId => ({
-        id: uuid(), tradeId: trade.id, bookId, userId: user.id, isRequester: true,
+        id: uuid(), tradeId: trade.id, bookId, userId, isRequester: true,
       }));
 
       return db.sequelize.transaction(async (transaction) => {
@@ -90,7 +90,7 @@ export default {
       // Set books of trade as unavailable
       // Void pending trades containing these books
       if (status === 1) {
-        return db.sequelize.transaction(async (transaction) => {
+        db.sequelize.transaction(async (transaction) => {
           await trade.save({ transaction });
           const tradeBooks = await trade.getTradeBooks({ transaction });
           const bookIds = tradeBooks.map(b => b.bookId);
@@ -106,13 +106,14 @@ export default {
           });
 
           return voidTrade(bookIds.join('\',\''), transaction);
-        })
+        }).then(() => trade)
           .catch((err) => {
             console.error(err);
             throw err;
           });
       }
       await trade.save();
+
 
       return trade;
     },
@@ -180,10 +181,11 @@ export default {
       const user = await User.findById(id);
       return user;
     },
-    goodreads: async (_, { q, field }, user) => {
-      const books = await goodReadsRequest({ q, field, userId: user.id });
+    goodreads: async (_, { q, field, userId }) => {
+      const books = await goodReadsRequest({ q, field, userId });
       return books;
-    },
+    }
+    ,
   },
   OwnedBook: {
     user: async (book) => {

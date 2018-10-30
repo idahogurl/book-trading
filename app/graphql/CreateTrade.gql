@@ -1,5 +1,5 @@
-mutation createTrade($bookIds: [String]) {
-  createTrade(bookIds: $bookIds) {
+mutation createTrade($bookIds: [String], $userId: String) {
+  createTrade(bookIds: $bookIds, userId: $userId) {
     trade {
       id
       status

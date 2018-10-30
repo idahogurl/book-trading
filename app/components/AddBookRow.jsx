@@ -6,16 +6,17 @@ import uuid from 'uuid/v4';
 import { notify } from '../utils/notifications';
 import Book from './Book';
 
+const userId = 'currentUser' in sessionStorage ? sessionStorage.getItem('currentUser') : null;
+
 class AddBookRow extends Component {
   state = {
     book: this.props.book,
-  }
-  onClick = this.onClick.bind(this)
+  };
+  onClick = this.onClick.bind(this);
   async onClick() {
     const { createMutation, book } = this.props;
-    const userId = sessionStorage.getItem('currentUser');
 
-    if ('currentUser' in sessionStorage) {
+    if (userId !== null) {
       const {
         id, title, author, imageUrl, publicationYear,
       } = book;
@@ -30,7 +31,11 @@ class AddBookRow extends Component {
         userId,
         available: true,
       };
-      const { data: { createOwnedBook } } = await createMutation({ variables: { input } });
+
+      const {
+        data: { createOwnedBook },
+      } = await createMutation({ variables: { input } });
+
       createOwnedBook.owned = true;
       this.setState({ book: createOwnedBook });
     } else {
@@ -40,11 +45,15 @@ class AddBookRow extends Component {
 
   render() {
     const { book } = this.state;
-    const isLoggedIn = 'currentUser' in sessionStorage;
+    const isLoggedIn = userId !== null;
     const button = (
-      <button onClick={this.onClick} className={cs('btn btn-primary', { disabled: isLoggedIn && book.owned })}>
+      <button
+        onClick={this.onClick}
+        className={cs('btn btn-primary', { disabled: isLoggedIn && book.owned })}
+      >
         {isLoggedIn && book.owned ? 'Book is Owned' : 'Add to Owned'}
-      </button>);
+      </button>
+    );
     return <Book book={book} button={button} />;
   }
 }

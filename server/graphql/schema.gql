@@ -7,7 +7,7 @@ type Mutation {
   createOwnedBook(input: CreateOwnedBookInput): OwnedBook
   updateOwnedBook(id: String, userId: String): OwnedBook
   deleteOwnedBook(id: String!): Void
-  createTrade(bookIds: [String]): CreateTradeResult
+  createTrade(bookIds: [String], userId: String): CreateTradeResult
   updateTrade(id: String, status: Int): Trade
   createUser(id: String, fullName: String, location: String): User
   updateUser(id: String, fullName: String, location: String): User
@@ -86,6 +86,7 @@ type Query {
   goodreads(
     q: String
     field: String
+    userId: String
   ): [Book]
 }
 
