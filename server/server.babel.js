@@ -3,12 +3,11 @@ import dotenv from 'dotenv';
 import https from 'https';
 import http from 'http';
 import bodyParser from 'body-parser';
-import cookieParser from 'cookie-parser';
 import path from 'path';
-import { ApolloServer } from 'apollo-server';
-
+import graphqlHTTP from 'express-graphql';
+import gql from 'graphql-tag';
+import { buildASTSchema } from 'graphql';
 import fs from 'fs';
-// import getUser from './getUser';
 import resolvers from './graphql/resolvers';
 import processLogin from './login';
 
@@ -18,7 +17,6 @@ const env = process.env.NODE_ENV || 'development';
 const app = express();
 
 const port = process.env.PORT || 8080;
-const apolloPort = process.env.APOLLO_PORT || 4000;
 
 const options =
   env === 'development'
@@ -37,8 +35,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 const typeDefs = fs.readFileSync(path.resolve(__dirname, 'graphql/schema.gql'), 'utf8');
-
-const apolloServer = new ApolloServer({ typeDefs, resolvers });
+const schema = buildASTSchema(gql`${typeDefs}`);
+app.use('/graphql', graphqlHTTP({ schema, resolvers }));
 
 app.post('/auth/facebook', (req, res, next) => {
   processLogin(req, res, next);
@@ -54,10 +52,6 @@ app.use('/logout', (req, res, next) => {
 // Always return the main index.html, so react-router renders the route in the client
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '..', 'public', 'index.html'));
-});
-
-apolloServer.listen().then(() => {
-  console.log(`Apollo Server Started at port ${apolloPort}`);
 });
 
 server.listen(port, () => {
