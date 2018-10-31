@@ -6,7 +6,6 @@ const processLogin = async function processLogin(req, res, next) {
       id, name, email, screenName,
     } = req.body;
 
-    const token = Math.random().toString(36).substr(2, 100);
     let user = await User.findOne({ where: { id } });
 
     if (!user) {
@@ -18,7 +17,6 @@ const processLogin = async function processLogin(req, res, next) {
       });
     }
 
-    res.cookie('token', `${user.id}|${token}`, { signed: true, httpOnly: true });
     res.redirect(302, '/');
     next();
   } catch (err) {

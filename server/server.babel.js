@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import https from 'https';
+import http from 'http';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import path from 'path';
@@ -29,10 +30,9 @@ const options =
     }
     : {};
 
-const server = https.createServer(options, app);
+const server = env === 'development' ? https.createServer(options, app) : http.createServer(options, app);
 
 app.use('/', express.static('public'));
-app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
