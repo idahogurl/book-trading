@@ -6,6 +6,7 @@
     "webpack-watch": "webpack -d --watch",
     "express-server": "nodemon server",
     "dev": "concurrent --kill-others \"yarn run webpack-watch\" \"yarn run express-server\"",
+    "build": "yarn run webpack --mode production",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
