@@ -3,6 +3,6 @@ localhost.crt
 localhost.key
 yarn.lock
 localhost.cert
-DS_STORE
+.DS_STORE
 .env
 dev.sqlite3

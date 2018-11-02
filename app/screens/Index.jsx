@@ -27,7 +27,7 @@ const IndexScreen = function IndexScreen() {
         </div>
         <NavBar />
       </header>
-      <HeroImage src="images/342462-PA9Q6O-452.jpg" />
+      <HeroImage src="images/books-hero.jpg" />
       <Switch>
         <Route path="/" exact component={AvailableBooksScreen} />
         <Route path="/books/available" component={AvailableBooksScreen} />
