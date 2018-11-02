@@ -1,14 +1,39 @@
-#project-boilerplate
 
-**Description**: Node Boilerplate for my [freecodecamp](http://www.freecodecamp.com "freecodecamp") projects
+# Book Swap
 
-GET https://www.googleapis.com/books/v1/volumes?q=little+women&maxAllowedMaturityRating=not-mature&printType=books&fields=items(id%2CvolumeInfo(authors%2CimageLinks%2Fthumbnail%2CpageCount%2Cpublisher%2Ctitle))&key={YOUR_API_KEY}
+**Description**
+My [freecodecamp](http://www.freecodecamp.com "freecodecamp") project
 
-Objective: Build a Glitch app that is functionally similar to this: https://chrome-delivery.glitch.me.
+**Objective**
+Build an app that is functionally similar to this: https://chrome-delivery.glitch.me.
 Fulfill the below user stories. Use whichever libraries or APIs you need. Give it your own personal style.
-User Story: I can view all books posted by every user.
-User Story: I can add a new book. DONE
-User Story: I can update my settings to store my full name, city, and state.
-User Story: I can propose a trade and wait for the other user to accept the trade.
-Once you've finished implementing these user stories, click the "I've completed this challenge" button and enter the URLs for both your GitHub repository and your live app running on Heroku.
-You can get feedback on your project by sharing it with your friends on Facebook.
+
+**User Stories**
+* I can view all books posted by every user.
+* I can add a new book. DONE
+* I can update my settings to store my full name, city, and state.
+* I can propose a trade and wait for the other user to accept the trade.
+
+### Technology
+**Backend:**
+ - Node Express (v4)
+ - Babel (v7 with presets env & react)
+ - Sequelize (v4)
+ - GraphQL Express Server
+
+**APIs:**
+ - Facebook Login
+ - GoodReads
+
+**Database:**
+- Development: SQLITE
+- Production: Postgres
+
+**Frontend:**
+ - React (v16.4)
+ - React Router (v4)
+ - Apollo GraphQL Client (v2.1)
+ - Bootstrap (v4)
+ - FontAwesome (v4)
+ - Fela
+ - Awesome Notifications

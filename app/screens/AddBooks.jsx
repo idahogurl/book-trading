@@ -39,9 +39,7 @@ class AddBooks extends React.Component {
                     variables: { ...values, userId },
                     fetchPolicy: 'no-cache',
                   });
-                  const { error, books: foundBooks } = data.goodreads;
-                  if (error) throw new Error(error);
-                  this.setState({ books: foundBooks });
+                  this.setState({ books: data.goodreads });
                   setSubmitting(false);
                 } catch (err) {
                   onError(err);

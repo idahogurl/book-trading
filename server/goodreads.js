@@ -15,7 +15,9 @@ const goodReadsRequest = async function goodReadsRequest({ q, field, userId }) {
       q,
       'search[field]': field,
     };
+
     const { data } = await get(apiUrl, { params });
+
     const parser = new Parser({ strict: false });
 
     const promise = new Promise((resolve, reject) => {
@@ -45,10 +47,10 @@ const goodReadsRequest = async function goodReadsRequest({ q, field, userId }) {
       books[index].owned = true;
     });
 
-    return { error: null, books };
+    return books;
   } catch (e) {
     console.log(e);
-    return { error: e, books: null };
+    throw e;
   }
 };
 

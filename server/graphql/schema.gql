@@ -87,12 +87,7 @@ type Query {
     q: String
     field: String
     userId: String
-  ): GoodReadsResponse
-}
-
-type GoodReadsResponse {
-  books: [Book]
-  error: String
+  ): [Book]
 }
 
 type Book {
