@@ -45,10 +45,10 @@ const goodReadsRequest = async function goodReadsRequest({ q, field, userId }) {
       books[index].owned = true;
     });
 
-    return books;
+    return { error: null, books };
   } catch (e) {
     console.log(e);
-    throw e;
+    return { error: e, books: null };
   }
 };
 
