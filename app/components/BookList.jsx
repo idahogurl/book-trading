@@ -12,7 +12,7 @@ const BookList = function BookList(props) {
   if ('currentUser' in sessionStorage === false) {
     return loginNotice;
   }
-  return books.length !== 0 ? books.map(b => props.render({ book: b })) : noBooks;
+  return books !== null && books.length !== 0 ? books.map(b => props.render({ book: b })) : noBooks;
 };
 
 BookList.propTypes = {

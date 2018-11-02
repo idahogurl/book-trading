@@ -47,7 +47,7 @@ const goodReadsRequest = async function goodReadsRequest({ q, field, userId }) {
 
     return books;
   } catch (e) {
-    console.error(e);
+    console.log(e);
     throw e;
   }
 };
