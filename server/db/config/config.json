@@ -1,10 +1,10 @@
 {
   "development": {
-    "username": "username",
-    "password": "password",
-    "database": "database",
-    "storage": "./dev.sqlite3",
-    "dialect": "sqlite"
+    "username": "",
+    "password": "",
+    "host": "localhost",
+    "database": "book_swap",
+    "dialect": "postgres"
   },
   "production": {
     "use_env_variable": "DATABASE_URL"

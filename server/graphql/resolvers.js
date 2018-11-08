@@ -21,16 +21,18 @@ const parseWhere = function parseWhere(where) {
 };
 
 const voidTrade = function voidTrade(bookIds, transaction) {
-  return Trade.update({ status: 3 }, {
-    where: {
-      id: {
-        [Op.in]:
-          db.sequelize.literal(`(SELECT trade_id FROM trade_books WHERE book_id IN ('${bookIds}'))`),
+  return Trade.update(
+    { status: 3 },
+    {
+      where: {
+        id: {
+          [Op.in]: db.sequelize.literal(`(SELECT trade_id FROM trade_books WHERE book_id IN ('${bookIds}'))`),
+        },
+        status: 0,
       },
-      status: 0,
+      transaction,
     },
-    transaction,
-  });
+  );
 };
 
 export default {
@@ -39,43 +41,57 @@ export default {
   Date: GraphQLToolTypes.Date({ name: 'Date' }),
   Void: GraphQLToolTypes.Void({ name: 'Void' }),
   Mutation: {
-    createOwnedBook: async (_, { input }) => db.sequelize.transaction(async (transaction) => {
-      const { bookId, userId } = input;
-      const existing = await OwnedBook.findOne({ where: { bookId, userId } }, { transaction });
-      if (existing) {
-        existing.set('available', 1);
-        await existing.save({ transaction });
-        return existing;
-      }
-      const ownedBook = await OwnedBook.create(input, { transaction });
-      return ownedBook;
-    }).catch((err) => {
-      console.error(err);
-      throw err;
-    }),
-    deleteOwnedBook: (_, { id }) => db.sequelize.transaction(async (transaction) => {
-      const ownedBook = await OwnedBook.findById(id, { transaction });
-      ownedBook.set('available', false);
-      await ownedBook.save({ transaction });
+    createOwnedBook: async (_, { input }) =>
+      db.sequelize
+        .transaction(async (transaction) => {
+          const { bookId, userId } = input;
+          const existing = await OwnedBook.findOne({ where: { bookId, userId } }, { transaction });
+          if (existing) {
+            existing.set('available', 1);
+            await existing.save({ transaction });
+            return existing;
+          }
+          const ownedBook = await OwnedBook.create(input, { transaction });
+          return ownedBook;
+        })
+        .catch((err) => {
+          console.error(err);
+          throw err;
+        }),
+    deleteOwnedBook: (_, { id }) =>
+      db.sequelize
+        .transaction(async (transaction) => {
+          const ownedBook = await OwnedBook.findById(id, { transaction });
+          ownedBook.set('available', false);
+          await ownedBook.save({ transaction });
 
-      await voidTrade(id, transaction);
-    }).catch((err) => {
-      console.error(err);
-      throw err;
-    }),
+          await voidTrade(id, transaction);
+        })
+        .catch((err) => {
+          console.error(err);
+          throw err;
+        }),
     createTrade: (_, { bookIds, userId }) => {
       const trade = {
-        id: uuid(), userId, status: 0, createdAt: new Date(),
+        id: uuid(),
+        userId,
+        status: 0,
+        createdAt: new Date(),
       };
       const tradeBooks = bookIds.map(bookId => ({
-        id: uuid(), tradeId: trade.id, bookId, userId, isRequester: true,
+        id: uuid(),
+        tradeId: trade.id,
+        bookId,
+        userId,
+        isRequester: true,
       }));
 
-      return db.sequelize.transaction(async (transaction) => {
-        await Trade.create(trade, { transaction });
-        await TradeBook.bulkCreate(tradeBooks, { transaction });
-        return { trade, tradeBooks };
-      })
+      return db.sequelize
+        .transaction(async (transaction) => {
+          await Trade.create(trade, { transaction });
+          await TradeBook.bulkCreate(tradeBooks, { transaction });
+          return { trade, tradeBooks };
+        })
         .catch((err) => {
           console.error(err);
           throw err;
@@ -90,23 +106,28 @@ export default {
       // Set books of trade as unavailable
       // Void pending trades containing these books
       if (status === 1) {
-        db.sequelize.transaction(async (transaction) => {
-          await trade.save({ transaction });
-          const tradeBooks = await trade.getTradeBooks({ transaction });
-          const bookIds = tradeBooks.map(b => b.bookId);
+        db.sequelize
+          .transaction(async (transaction) => {
+            await trade.save({ transaction });
+            const tradeBooks = await trade.getTradeBooks({ transaction });
+            const bookIds = tradeBooks.map(b => b.bookId);
 
-          // Set books unavailable
-          await OwnedBook.update({ available: false }, {
-            where: {
-              id: {
-                [Op.in]: bookIds,
+            // Set books unavailable
+            await OwnedBook.update(
+              { available: false },
+              {
+                where: {
+                  id: {
+                    [Op.in]: bookIds,
+                  },
+                },
+                transaction,
               },
-            },
-            transaction,
-          });
+            );
 
-          return voidTrade(bookIds.join('\',\''), transaction);
-        }).then(() => trade)
+            return voidTrade(bookIds.join("','"), transaction);
+          })
+          .then(() => trade)
           .catch((err) => {
             console.error(err);
             throw err;
@@ -114,12 +135,13 @@ export default {
       }
       await trade.save();
 
-
       return trade;
     },
     createUser: async (_, { id, fullName, location }) => {
       const user = User.create({
-        id, fullName, location,
+        id,
+        fullName,
+        location,
       });
       return user;
     },
@@ -138,10 +160,8 @@ export default {
         order: parseOrder(order),
         where: parseWhere(where),
         offset,
-        group: 'OwnedBook.id',
-        include: [
-          { model: TradeBook },
-        ],
+        group: ['TradeBooks.id', 'OwnedBook.id'],
+        include: [{ model: TradeBook }],
         attributes: {
           include: [
             [db.sequelize.fn('COUNT', db.sequelize.col('TradeBooks.book_id')), 'tradeCount'],
@@ -184,8 +204,7 @@ export default {
     goodreads: async (_, { q, field, userId }) => {
       const books = await goodReadsRequest({ q, field, userId });
       return books;
-    }
-    ,
+    },
   },
   OwnedBook: {
     user: async (book) => {
