@@ -50,7 +50,7 @@
     "react-fela": "^8.0.4",
     "react-router-dom": "^4.2.2",
     "react-router-prop-types": "^1.0.4",
-    "sequelize": "4",
+    "sequelize": "5",
     "sequelize-cli": "4",
     "sequelize-heroku": "^2.0.0",
     "uuid": "^3.3.2",
