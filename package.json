@@ -37,7 +37,7 @@
     "graphql-tag": "^2.10.0",
     "graphql-tools": "^4.0.2",
     "graphql-tools-types": "^1.1.21",
-    "lodash": "^4.17.13",
+    "lodash": "^4.17.19",
     "merge-graphql-schemas": "^1.5.1",
     "morgan": "^1.9.1",
     "pg": "^7.4.3",
