@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 const path = require('path');
 const ect = require('ect')();
 const fs = require('fs');
@@ -5,15 +6,15 @@ const fs = require('fs');
 const Classes = require('sequelize-migration-generator');
 
 const TEMPLATE = path.resolve(`${__dirname}/../../node_modules/sequelize-migration-generator/data/migration-file.js.ect`);
-const Model = Classes.Model;
-const Field = Classes.Field;
+const { Model } = Classes;
+const { Field } = Classes;
 let modelsDir = '/./models';
 let migrationsDir = '/./migrations';
 
 const env = process.env.NODE_ENV || 'development';
-const config = require(`${__dirname}/config/config.json`)[env];
-
 const Sequelize = require('sequelize');
+
+const config = require('./config/config.json')[env];
 
 const sequelize = new Sequelize(config.database, config.username, config.password, config);
 
@@ -34,7 +35,7 @@ function importModels(modelDir) {
   const db = {};
   fs
     .readdirSync(modelDir)
-    .filter(file => (file.indexOf('.') !== 0) && !file.includes('index') && (file.slice(-3) === '.js'))
+    .filter((file) => (file.indexOf('.') !== 0) && !file.includes('index') && (file.slice(-3) === '.js'))
     .forEach((file) => {
       const model = sequelize.import(path.join(modelDir, file));
       db[model.name] = model;
@@ -49,7 +50,6 @@ function importModels(modelDir) {
   return db;
 }
 
-
 function main() {
   modelsDir = path.resolve(`${__dirname}${modelsDir}`);
   migrationsDir = path.resolve(`${__dirname}${migrationsDir}`);
@@ -61,6 +61,4 @@ function main() {
     });
 }
 
-
 main();
-

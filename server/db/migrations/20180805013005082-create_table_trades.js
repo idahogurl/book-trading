@@ -1,6 +1,5 @@
 /* This file is auto-generated using https://github.com/harish2704/sequelize-migration-generator. */
 
-
 module.exports = {
   up(queryInterface, Sequelize) {
     return queryInterface.createTable('trade', {
@@ -20,13 +19,13 @@ module.exports = {
       created_at: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.fn('now')
+        defaultValue: Sequelize.fn('now'),
       },
 
       updated_at: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.fn('now')
+        defaultValue: Sequelize.fn('now'),
       },
 
       status: {
@@ -38,8 +37,7 @@ module.exports = {
     });
   },
 
-  down(queryInterface, Sequelize) {
+  down(queryInterface) {
     return queryInterface.dropTable('trade');
   },
 };
-

@@ -52,13 +52,13 @@ module.exports = {
         created_at: {
           type: Sequelize.DATE,
           allowNull: false,
-          defaultValue: Sequelize.fn('now')
+          defaultValue: Sequelize.fn('now'),
         },
 
         updated_at: {
           type: Sequelize.DATE,
           allowNull: false,
-          defaultValue: Sequelize.fn('now')
+          defaultValue: Sequelize.fn('now'),
         },
       },
       {
@@ -74,7 +74,7 @@ module.exports = {
     );
   },
 
-  down(queryInterface, Sequelize) {
+  down(queryInterface) {
     return queryInterface.dropTable('owned_book');
   },
 };

@@ -1,6 +1,5 @@
 /* This file is auto-generated using https://github.com/harish2704/sequelize-migration-generator. */
 
-
 module.exports = {
   up(queryInterface, Sequelize) {
     return queryInterface.createTable('trade_book', {
@@ -51,8 +50,7 @@ module.exports = {
     });
   },
 
-  down(queryInterface, Sequelize) {
+  down(queryInterface) {
     return queryInterface.dropTable('trade_book');
   },
 };
-
