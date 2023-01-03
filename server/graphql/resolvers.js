@@ -2,7 +2,7 @@ import GraphQLToolTypes from 'graphql-tools-types';
 import { Op } from 'sequelize';
 import uuid from 'uuid/v4';
 import db, { OwnedBook, Trade, TradeBook, User } from '../db/models';
-import goodReadsRequest from '../goodreads';
+import goodReadsRequest from '../../pages/api/goodreads';
 
 const parseOrder = function parseOrder(order) {
   if (order) {

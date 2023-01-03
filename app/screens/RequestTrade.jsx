@@ -22,17 +22,18 @@ class RequestTrade extends Component {
   // invalidate all pending trades containing these books when accepted
 
   onCreateTrade = this.onCreateTrade.bind(this);
+
   async onCreateTrade() {
     // Do both sides have selections? (check for books not owned by current user)
     const { books } = this.state;
-    const otherUser = books.filter(b => b.bookUserId !== userId);
+    const otherUser = books.filter((b) => b.bookUserId !== userId);
 
     if (books.length && otherUser.length) {
       // Are the selections from the same user?
       const firstId = otherUser[0].userId;
-      if (otherUser.every(o => o.userId === firstId)) {
+      if (otherUser.every((o) => o.userId === firstId)) {
         const { createTrade, history } = this.props;
-        await createTrade({ variables: { bookIds: books.map(b => b.id), userId } });
+        await createTrade({ variables: { bookIds: books.map((b) => b.id), userId } });
         history.push('/requests/my');
       } else {
         onError('Choose selections from only one user', false);
@@ -43,11 +44,12 @@ class RequestTrade extends Component {
   }
 
   onClick = this.onClick.bind(this);
+
   onClick({ id, userId: bookUserId }) {
     const { books } = this.state;
-    const book = books.find(b => b.id === id);
+    const book = books.find((b) => b.id === id);
     if (book) {
-      this.setState({ books: books.filter(b => b.id !== id) });
+      this.setState({ books: books.filter((b) => b.id !== id) });
     } else {
       books.push({ id, bookUserId });
       this.setState({ books });
@@ -71,11 +73,11 @@ class RequestTrade extends Component {
 
           if (loading) return <Spinner />;
 
-          const myBooks = data.ownedBooks.filter(o => o.user.id === userId);
-          const availableBooks = data.ownedBooks.filter(o => o.user.id !== userId);
+          const myBooks = data.ownedBooks.filter((o) => o.user.id === userId);
+          const availableBooks = data.ownedBooks.filter((o) => o.user.id !== userId);
 
           return (
-            <Fragment>
+            <>
               <h1>Create Trade</h1>
               <div>
                 <div className="d-flex flex-wrap">
@@ -88,7 +90,7 @@ class RequestTrade extends Component {
                           key={book.id}
                           book={book}
                           onClick={this.onClick}
-                          selected={books.findIndex(b => b.id === book.id) !== -1}
+                          selected={books.findIndex((b) => b.id === book.id) !== -1}
                         />
                       )}
                     />
@@ -102,7 +104,7 @@ class RequestTrade extends Component {
                           key={book.id}
                           book={book}
                           onClick={this.onClick}
-                          selected={books.findIndex(b => b.id === book.id) !== -1}
+                          selected={books.findIndex((b) => b.id === book.id) !== -1}
                         />
                       )}
                     />
@@ -110,6 +112,7 @@ class RequestTrade extends Component {
                 </div>
                 <div style={{ width: '38em' }}>
                   <button
+                    type="button"
                     className="btn btn-primary mt-4 mb-4 d-block"
                     onClick={this.onCreateTrade}
                   >
@@ -117,7 +120,7 @@ class RequestTrade extends Component {
                   </button>
                 </div>
               </div>
-            </Fragment>
+            </>
           );
         }}
       </Query>

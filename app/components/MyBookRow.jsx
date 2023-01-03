@@ -5,6 +5,7 @@ import Book from './Book';
 
 class MyBookRow extends PureComponent {
   onClick = this.onClick.bind(this)
+
   async onClick() {
     const { deleteMutation, book, onDeleteClick } = this.props;
     await deleteMutation({ variables: { id: book.id } });
@@ -13,7 +14,7 @@ class MyBookRow extends PureComponent {
 
   render() {
     const { book } = this.props;
-    const button = <button id={book.id} className="btn btn-danger" onClick={this.onClick}>Delete</button>;
+    const button = <button type="button" id={book.id} className="btn btn-danger" onClick={this.onClick}>Delete</button>;
 
     return <Book book={book} button={button} />;
   }

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Query, Mutation } from 'react-apollo';
 import { Formik } from 'formik';
 
@@ -7,7 +6,7 @@ import UPDATE_USER from '../graphql/UpdateUser.gql';
 
 import Spinner from '../components/Spinner';
 
-import { onError, notify } from '../utils/notifications';
+// import { onError, notify } from '../utils/notifications';
 
 const Profile = function Profile() {
   const currentUser = sessionStorage.getItem('currentUser');
@@ -20,7 +19,7 @@ const Profile = function Profile() {
         const { user } = data;
         return (
           <Mutation mutation={UPDATE_USER}>
-            {updateMutation => (
+            {(updateMutation) => (
               <Formik
                 initialValues={{
                   fullName: user.fullName,

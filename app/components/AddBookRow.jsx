@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import cs from 'classnames';
-import uuid from 'uuid/v4';
 
-import { notify } from '../utils/notifications';
 import Book from './Book';
 
 const userId = 'currentUser' in sessionStorage ? sessionStorage.getItem('currentUser') : null;
 
 class AddBookRow extends Component {
-  state = {
-    book: this.props.book,
-  };
+  constructor() {
+    super();
+    const { book } = this.props;
+    this.state = { book };
+  }
+
   onClick = this.onClick.bind(this);
+
   async onClick() {
     const { createMutation, book } = this.props;
 
@@ -22,7 +24,6 @@ class AddBookRow extends Component {
       } = book;
 
       const input = {
-        id: uuid(),
         bookId: id,
         title,
         author,
@@ -39,7 +40,8 @@ class AddBookRow extends Component {
       createOwnedBook.owned = true;
       this.setState({ book: createOwnedBook });
     } else {
-      notify('Login to add books');
+      // notify('Login to add books');
+      // TODO: Show toast
     }
   }
 
@@ -48,6 +50,7 @@ class AddBookRow extends Component {
     const isLoggedIn = userId !== null;
     const button = (
       <button
+        type="button"
         onClick={this.onClick}
         className={cs('btn btn-primary', { disabled: isLoggedIn && book.owned })}
       >

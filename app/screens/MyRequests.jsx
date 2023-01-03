@@ -18,6 +18,7 @@ import Card from '../components/Card';
 
 class MyRequests extends PureComponent {
   onClick = this.onClick.bind(this);
+
   onClick(id, status) {
     const { updateTrade } = this.props;
     updateTrade({ variables: { id, status } });
@@ -29,7 +30,7 @@ class MyRequests extends PureComponent {
     }
 
     return (
-      <Fragment>
+      <>
         <h1>My Requests</h1>
         <Query query={GET_REQUESTS} variables={{}} fetchPolicy="network-only">
           {({ data, loading, error }) => {
@@ -40,23 +41,29 @@ class MyRequests extends PureComponent {
             const userId = sessionStorage.getItem('currentUser');
 
             return trades.map((t) => {
-              const books = t.tradeBooks.map(trade => trade.ownedBook);
+              const books = t.tradeBooks.map((trade) => trade.ownedBook);
 
-              const currentUserBooks = books.filter(b => b.user.id === userId);
-              const otherUserBooks = books.filter(b => b.user.id !== userId);
+              const currentUserBooks = books.filter((b) => b.user.id === userId);
+              const otherUserBooks = books.filter((b) => b.user.id !== userId);
               const isRequester = t.userId === userId;
               const requesterName = isRequester ? 'I' : otherUserBooks[0].user.screenName;
               return (
                 <div key={t.id} className="mb-3 p-3 border">
-                  <strong>Created:</strong> {new Date(t.createdAt).toLocaleString('en-US')}
+                  <strong>Created:</strong>
+                  {' '}
+                  {new Date(t.createdAt).toLocaleString('en-US')}
                   <br />
-                  <strong>Status:</strong> {StatusEnum[t.status]}
+                  <strong>Status:</strong>
+                  {' '}
+                  {StatusEnum[t.status]}
                   <br />
-                  <strong>Updated:</strong> {new Date(t.updatedAt).toLocaleString('en-US')}
+                  <strong>Updated:</strong>
+                  {' '}
+                  {new Date(t.updatedAt).toLocaleString('en-US')}
                   <br />
-                  {t.status === 0 &&
-                    !isRequester && (
-                      <Fragment>
+                  {t.status === 0
+                    && !isRequester && (
+                      <>
                         <button
                           className="btn btn-success mt-3"
                           onClick={() => {
@@ -64,7 +71,8 @@ class MyRequests extends PureComponent {
                           }}
                         >
                           Accept
-                        </button>{' '}
+                        </button>
+                        {' '}
                         <button
                           className="btn btn-danger mt-3"
                           onClick={() => {
@@ -73,8 +81,8 @@ class MyRequests extends PureComponent {
                         >
                           Reject
                         </button>
-                      </Fragment>
-                    )}
+                      </>
+                  )}
                   <div className="d-flex">
                     <div>
                       <h2 className="h4 w-100 mt-2">
@@ -98,7 +106,7 @@ class MyRequests extends PureComponent {
             });
           }}
         </Query>
-      </Fragment>
+      </>
     );
   }
 }

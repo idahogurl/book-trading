@@ -5,16 +5,19 @@ import Book from './Book';
 
 class TradeBookRow extends PureComponent {
   onClick = this.onClick.bind(this);
+
   onClick() {
     const { book, onClick } = this.props;
     onClick({ id: book.id, userId: book.user.id });
   }
+
   render() {
     const { book, selected } = this.props;
 
     // save or remove
     const button = (
       <button
+        type="button"
         id={book.id}
         className={cs('btn ml-3', { 'btn-danger': selected }, { 'btn-primary': !selected })}
         title={selected ? 'Remove' : 'Add'}
@@ -22,7 +25,8 @@ class TradeBookRow extends PureComponent {
       >
         <i className={cs('fa', { 'fa-close': selected }, { 'fa-plus': !selected })} aria-hidden="true" />
         {selected ? ' Remove' : ' Add'}
-      </button>);
+      </button>
+    );
 
     return <Book book={book} button={button} />;
   }

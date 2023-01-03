@@ -1,32 +1,37 @@
-import React from 'react';
-import NavBarLink from '../components/NavBarLink';
+import PropTypes from 'prop-types';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
 
-const NavBar = function NavBar() {
+function NavBar({ session }) {
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark">
-      <button
-        className="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbar-content"
-        aria-controls="navbar-content"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span className="navbar-toggler-icon" />
-      </button>
-      <div className="collapse navbar-collapse" id="navbar-content">
-        <ul className="navbar-nav mr-auto">
-          <NavBarLink to="/books/owned">My Books</NavBarLink>
-          <NavBarLink to="/books/add">Add Books</NavBarLink>
-          <NavBarLink to="/books/available">Available Books</NavBarLink>
-          <NavBarLink to="/requests/my">My Requests</NavBarLink>
-          <NavBarLink to="/requests/new">Create Request</NavBarLink>
-          {'currentUser' in sessionStorage && <NavBarLink to="/profile">Profile</NavBarLink>}
-        </ul>
-      </div>
-    </nav>
+    <Navbar bg="dark" expand="lg">
+      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Collapse id="basic-navbar-nav">
+        <Nav className="me-auto">
+          <Nav.Link href="/">Home</Nav.Link>
+          <Nav.Link href="/books/owned">My Books</Nav.Link>
+          <Nav.Link href="/books/add">Add Books</Nav.Link>
+          <Nav.Link href="/books/available">Available Books</Nav.Link>
+          <Nav.Link href="/requests/my">My Requests</Nav.Link>
+          <Nav.Link href="/requests/new">Create Request</Nav.Link>
+          {session && <Nav.Link href="/profile">Profile</Nav.Link>}
+        </Nav>
+      </Navbar.Collapse>
+
+    </Navbar>
   );
+}
+
+NavBar.propTypes = {
+  session: PropTypes.shape({
+    user: PropTypes.shape({
+      id: PropTypes.string,
+    }),
+  }),
+};
+
+NavBar.defaultProps = {
+  session: undefined,
 };
 
 export default NavBar;

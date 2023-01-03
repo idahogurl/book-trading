@@ -1,0 +1,18 @@
+{
+  "extends": ["airbnb", "next/core-web-vitals"],
+  "plugins": [
+      "react"
+  ],
+  "rules": {
+    "prefer-arrow-callback": "off",
+    "react/sort-comp": 0,
+    "react/state-in-constructor": "warn",
+    "react/prop-types": "warn",
+    "react/jsx-filename-extension": "off"
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
+}

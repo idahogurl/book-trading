@@ -1,10 +1,7 @@
-import dotenv from 'dotenv';
 import { get } from 'axios';
 import { Parser } from 'xml2js';
-import { Op } from 'sequelize';
-import { OwnedBook } from './db/models';
-
-dotenv.config();
+import { Op } from 'sequelize-cockroachdb';
+import { OwnedBook } from '../../server/db/models';
 
 const goodReadsRequest = async function goodReadsRequest({ q, field, userId }) {
   try {
@@ -29,7 +26,7 @@ const goodReadsRequest = async function goodReadsRequest({ q, field, userId }) {
 
     const response = await promise;
 
-    const books = response.GOODREADSRESPONSE.SEARCH[0].RESULTS[0].WORK.map(w => ({
+    const books = response.GOODREADSRESPONSE.SEARCH[0].RESULTS[0].WORK.map((w) => ({
       publicationYear: w.ORIGINAL_PUBLICATION_YEAR[0]._,
       id: w.BEST_BOOK[0].ID[0]._,
       title: w.BEST_BOOK[0].TITLE[0],
@@ -37,13 +34,13 @@ const goodReadsRequest = async function goodReadsRequest({ q, field, userId }) {
       imageUrl: w.BEST_BOOK[0].IMAGE_URL[0],
     }));
 
-    const ids = books.map(b => b.id);
+    const ids = books.map((b) => b.id);
     const ownedBooks = await OwnedBook.findAll({
       where: { book_id: { [Op.in]: ids }, userId },
     });
 
     ownedBooks.forEach((o) => {
-      const index = books.findIndex(b => b.id === o.bookId);
+      const index = books.findIndex((b) => b.id === o.bookId);
       books[index].owned = true;
     });
 

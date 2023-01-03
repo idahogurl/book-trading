@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+/* eslint-disable @next/next/no-img-element */
 import PropTypes from 'prop-types';
 import Card from './Card';
 
@@ -12,17 +12,21 @@ const Book = function Book(props) {
   );
 
   const text = (
-    <Fragment>
+    <>
       <strong>Publication Year:</strong>
 
       <br />
       {book.user && (
         <small className="text-muted">
-          from {book.user.screenName}
-          &nbsp;in {book.user.location ? book.user.location : 'Unknown'}
+          from
+          {' '}
+          {book.user.name}
+          &nbsp;in
+          {' '}
+          {book.user.location ? book.user.location : 'Unknown'}
         </small>
       )}
-    </Fragment>
+    </>
   );
 
   const footer = button && <div className="card-footer">{button}</div>;
@@ -39,7 +43,14 @@ const Book = function Book(props) {
 };
 
 Book.propTypes = {
-  book: PropTypes.shape({}).isRequired,
+  book: PropTypes.shape({
+    imageUrl: PropTypes.string,
+    title: PropTypes.string,
+    user: PropTypes.shape({
+      name: PropTypes.string,
+      location: PropTypes.string,
+    }),
+  }).isRequired,
   button: PropTypes.element,
 };
 

@@ -19,19 +19,21 @@ const userId = 'currentUser' in sessionStorage ? sessionStorage.getItem('current
 
 class MyBooks extends PureComponent {
   onDeleteClick = this.onDeleteClick.bind(this);
+
   onDeleteClick() {
     const { history } = this.props;
     history.go(0);
   }
+
   render() {
     return (
-      <Fragment>
+      <>
         <h1>My Books</h1>
         <Link to="/books/add" className="btn btn-primary mb-3">
           Add Book
         </Link>
         <Mutation mutation={DELETE_MUTATION}>
-          {deleteMutation => (
+          {(deleteMutation) => (
             <Query
               query={GET_BOOKS}
               variables={{ where: JSON.stringify({ userId, available: true }) }}
@@ -58,7 +60,7 @@ class MyBooks extends PureComponent {
             </Query>
           )}
         </Mutation>
-      </Fragment>
+      </>
     );
   }
 }
