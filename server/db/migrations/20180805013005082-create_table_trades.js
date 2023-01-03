@@ -3,15 +3,16 @@
 
 module.exports = {
   up(queryInterface, Sequelize) {
-    return queryInterface.createTable('trades', {
+    return queryInterface.createTable('trade', {
       id: {
-        type: Sequelize.STRING,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.fn('gen_random_uuid'),
         allowNull: false,
         primaryKey: true,
       },
 
       user_id: {
-        type: Sequelize.STRING,
+        type: Sequelize.UUID,
         allowNull: false,
         references: { model: 'users', key: 'id' },
       },
@@ -19,11 +20,13 @@ module.exports = {
       created_at: {
         type: Sequelize.DATE,
         allowNull: false,
+        defaultValue: Sequelize.fn('now')
       },
 
       updated_at: {
         type: Sequelize.DATE,
         allowNull: false,
+        defaultValue: Sequelize.fn('now')
       },
 
       status: {
@@ -36,7 +39,7 @@ module.exports = {
   },
 
   down(queryInterface, Sequelize) {
-    return queryInterface.dropTable('trades');
+    return queryInterface.dropTable('trade');
   },
 };
 

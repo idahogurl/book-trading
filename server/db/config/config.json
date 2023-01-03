@@ -3,10 +3,15 @@
     "username": "",
     "password": "",
     "host": "localhost",
-    "database": "book_swap",
+    "database": "apps_db",
     "dialect": "postgres"
   },
   "production": {
-    "use_env_variable": "DATABASE_URL"
+    "use_env_variable": "DATABASE_URL",
+    "dialect":"postgres",
+    "ssl": true,
+    "dialectOptions": {
+        "ssl": true
+    }
   }
 }

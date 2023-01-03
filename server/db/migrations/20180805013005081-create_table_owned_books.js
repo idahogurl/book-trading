@@ -3,10 +3,11 @@
 module.exports = {
   up(queryInterface, Sequelize) {
     return queryInterface.createTable(
-      'owned_books',
+      'owned_book',
       {
         id: {
-          type: Sequelize.STRING,
+          type: Sequelize.UUID,
+          defaultValue: Sequelize.fn('gen_random_uuid'),
           allowNull: true,
           primaryKey: true,
         },
@@ -17,7 +18,7 @@ module.exports = {
         },
 
         user_id: {
-          type: Sequelize.STRING,
+          type: Sequelize.UUID,
           allowNull: false,
           references: { model: 'users', key: 'id' },
         },
@@ -51,11 +52,13 @@ module.exports = {
         created_at: {
           type: Sequelize.DATE,
           allowNull: false,
+          defaultValue: Sequelize.fn('now')
         },
 
         updated_at: {
           type: Sequelize.DATE,
           allowNull: false,
+          defaultValue: Sequelize.fn('now')
         },
       },
       {
@@ -72,6 +75,6 @@ module.exports = {
   },
 
   down(queryInterface, Sequelize) {
-    return queryInterface.dropTable('owned_books');
+    return queryInterface.dropTable('owned_book');
   },
 };
