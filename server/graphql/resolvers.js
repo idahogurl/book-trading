@@ -1,11 +1,10 @@
 import GraphQLToolTypes from 'graphql-tools-types';
-import { Op } from 'sequelize-cockroachdb';
 import { v4 as uuid } from 'uuid';
 import db from '../db/models';
 import goodReadsRequest from './goodreads';
 
 const {
-  Trade, OwnedBook, TradeBook, User,
+  Sequelize: { Op }, Trade, OwnedBook, TradeBook, User,
 } = db;
 
 const parseOrder = function parseOrder(order) {
@@ -209,8 +208,8 @@ const resolvers = {
     },
   },
   OwnedBook: {
-    user: async (book) => {
-      const user = await book.getUser();
+    user: async (book, _, { userLoader }) => {
+      const user = await userLoader.load(book.userId);
       return user;
     },
   },

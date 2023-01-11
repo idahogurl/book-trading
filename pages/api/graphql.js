@@ -1,6 +1,8 @@
 import { createYoga, createSchema } from 'graphql-yoga';
+
 import resolvers from '../../server/graphql/resolvers';
 import typeDefs from '../../server/graphql/schema.gql';
+import context from '../../server/graphql/context';
 
 const schema = createSchema({
   typeDefs,
@@ -18,4 +20,5 @@ export default createYoga({
   schema,
   // defined explicitly because our endpoint lives at a different path other than `/graphql`
   graphqlEndpoint: '/api/graphql',
+  context,
 });

@@ -1,4 +1,5 @@
 import Sequelize from 'sequelize-cockroachdb';
+
 import configs from '../config/config.json';
 import OwnedBook from './ownedBook';
 import Trade from './trade';
