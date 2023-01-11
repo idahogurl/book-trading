@@ -107,14 +107,15 @@ TradeRow.propTypes = {
 
 function MyRequests() {
   const { data: session } = useSession();
-  console.log(session);
 
   const sessionUserId = session?.user.id;
 
+  // TODO: Make button work
   // function onClick(id, status) {
   //   const { updateTrade } = this.props;
   //   updateTrade({ variables: { id, status } });
   // }
+
   const { loading, error, data } = useQuery(GET_REQUESTS, {
     fetchPolicy: 'network-only',
   });

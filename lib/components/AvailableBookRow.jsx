@@ -1,4 +1,5 @@
-import SharedPropTypes from '../utils/propTypes';
+import SharedPropTypes from '../propTypes';
+
 import Book from './Book';
 
 function AvailableBookRow(props) {
@@ -10,7 +11,7 @@ function AvailableBookRow(props) {
       <span>
         Requests
         {' '}
-        <span className="badge badge-light">{book.requestCount ? book.requestCount : 0}</span>
+        <span className="badge bg-secondary text-bg-dark">{book.requestCount ? book.requestCount : 0}</span>
       </span>
     </>
   );
