@@ -4,6 +4,7 @@ import GitHubProvider from 'next-auth/providers/github';
 import pg from 'pg';
 import Sequelize from 'sequelize-cockroachdb';
 import SequelizeAdapter from '@next-auth/sequelize-adapter';
+import User from '../../../server/db/models/user';
 
 // https://sequelize.org/master/manual/getting-started.html#connecting-to-a-database
 const sequelize = new Sequelize(process.env.DATABASE_URL);
@@ -18,7 +19,11 @@ export default NextAuth({
       clientSecret: process.env.GITHUB_SECRET,
     }),
   ],
-  adapter: SequelizeAdapter(sequelize),
+  adapter: SequelizeAdapter(sequelize, {
+    models: {
+      User: User(sequelize, Sequelize.DataTypes),
+    },
+  }),
   callbacks: {
     async session({ session, user }) {
       if (session?.user) {

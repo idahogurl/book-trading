@@ -1,24 +1,8 @@
+import { models } from '@next-auth/sequelize-adapter';
+
 export default function UserModel(sequelize, DataTypes) {
   const User = sequelize.define('User', {
-    id: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      primaryKey: true,
-    },
-    fullName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      field: 'full_name',
-    },
-    screenName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      field: 'screen_name',
-    },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
+    ...models.User,
     location: {
       type: DataTypes.STRING,
       allowNull: true,

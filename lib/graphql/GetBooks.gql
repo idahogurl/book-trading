@@ -8,7 +8,7 @@ query getBooks($where: JSON) {
     requestCount
     user {
       id
-      screenName
+      name
       location
     }
   }

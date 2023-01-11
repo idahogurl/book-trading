@@ -118,9 +118,8 @@ type TradeBook {
 
 type User {
   id: String!
-  fullName: String
+  name: String
   location: String
-  screenName: String
   email: String
   ownedBooks(
     limit: Int
