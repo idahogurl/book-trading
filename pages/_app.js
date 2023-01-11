@@ -8,8 +8,8 @@ import '@fortawesome/fontawesome-svg-core/styles.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/globals.css';
 
-import client from '../apollo-client';
-import ErrorBoundary from '../app/components/ErrorBoundary';
+import client from '../lib/apolloClient';
+import ErrorBoundary from '../lib/components/ErrorBoundary';
 
 config.autoAddCss = false;
 

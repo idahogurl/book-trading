@@ -1,13 +1,9 @@
 /* eslint-disable react/jsx-filename-extension */
 import Head from 'next/head';
-import Image from 'next/image';
-import { useSession, signIn, signOut } from 'next-auth/react';
-import NavBar from '../app/components/NavBar';
-import HeroImage from '../app/components/HeroImage';
-import GitHubButton from '../app/components/GitHubButton';
+import Layout from '../lib/components/Layout';
+import HeroImage from '../lib/components/HeroImage';
 
 export default function Home() {
-  const { data: session } = useSession();
   return (
     <>
       <Head>
@@ -16,27 +12,10 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="container-fluid">
-        <header>
-          <div className="d-flex align-items-center">
-            <div className="flex-grow-1">
-              <Image
-                src="/images/bookSwap2.svg"
-                alt="Book Swap"
-                className="mt-3 mb-3 logo"
-                width={250}
-                height={71}
-              />
-            </div>
-            <div>{session ? <GitHubButton onClick={() => signOut('github')}>Sign Out of</GitHubButton> : <GitHubButton onClick={() => signIn('github')}>Sign In with</GitHubButton>}</div>
-          </div>
-          <NavBar session={session} />
-        </header>
-        <main>
-          <HeroImage src="images/books-hero.jpg" />
-          <small className="float-right"><a href="https://www.freepik.com/free-photo/books-randomly-stacked-on-shelf_2543726.htm">Images provided by Freepik</a></small>
-        </main>
-      </div>
+      <Layout>
+        <HeroImage src="images/books-hero.jpg" />
+        <small className="float-right"><a href="https://www.freepik.com/free-photo/books-randomly-stacked-on-shelf_2543726.htm">Images provided by Freepik</a></small>
+      </Layout>
     </>
   );
 }

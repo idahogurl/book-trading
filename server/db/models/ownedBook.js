@@ -2,7 +2,6 @@ export default function OwnedBookModel(sequelize, DataTypes) {
   const OwnedBook = sequelize.define('OwnedBook', {
     id: {
       type: DataTypes.UUID,
-      allowNull: false,
       primaryKey: true,
     },
     bookId: {

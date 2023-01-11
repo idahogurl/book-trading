@@ -1,13 +1,17 @@
 import GraphQLToolTypes from 'graphql-tools-types';
-import { Op } from 'sequelize';
-import uuid from 'uuid/v4';
-import db, { OwnedBook, Trade, TradeBook, User } from '../db/models';
-import goodReadsRequest from '../../pages/api/goodreads';
+import { Op } from 'sequelize-cockroachdb';
+import { v4 as uuid } from 'uuid';
+import db from '../db/models';
+import goodReadsRequest from './goodreads';
+
+const {
+  Trade, OwnedBook, TradeBook, User,
+} = db;
 
 const parseOrder = function parseOrder(order) {
   if (order) {
     const columns = order.split(', ');
-    const columnOrder = columns.map(c => c.split(' '));
+    const columnOrder = columns.map((c) => c.split(' '));
     return columnOrder;
   }
   return [];
@@ -35,42 +39,40 @@ const voidTrade = function voidTrade(bookIds, transaction) {
   );
 };
 
-export default {
+const resolvers = {
   UUID: GraphQLToolTypes.UUID({ name: 'UUID', storage: 'string' }),
   JSON: GraphQLToolTypes.JSON({ name: 'JSON' }),
   Date: GraphQLToolTypes.Date({ name: 'Date' }),
   Void: GraphQLToolTypes.Void({ name: 'Void' }),
   Mutation: {
-    createOwnedBook: async (_, { input }) =>
-      db.sequelize
-        .transaction(async (transaction) => {
-          const { bookId, userId } = input;
-          const existing = await OwnedBook.findOne({ where: { bookId, userId } }, { transaction });
-          if (existing) {
-            existing.set('available', 1);
-            await existing.save({ transaction });
-            return existing;
-          }
-          const ownedBook = await OwnedBook.create(input, { transaction });
-          return ownedBook;
-        })
-        .catch((err) => {
-          console.error(err);
-          throw err;
-        }),
-    deleteOwnedBook: (_, { id }) =>
-      db.sequelize
-        .transaction(async (transaction) => {
-          const ownedBook = await OwnedBook.findById(id, { transaction });
-          ownedBook.set('available', false);
-          await ownedBook.save({ transaction });
+    createOwnedBook: async (_, { input }) => db.sequelize
+      .transaction(async (transaction) => {
+        const { bookId, userId } = input;
+        const existing = await OwnedBook.findOne({ where: { bookId, userId } }, { transaction });
+        if (existing) {
+          existing.set('available', 1);
+          await existing.save({ transaction });
+          return existing;
+        }
+        const ownedBook = await OwnedBook.create(input, { transaction });
+        return ownedBook;
+      })
+      .catch((err) => {
+        console.error(err);
+        throw err;
+      }),
+    deleteOwnedBook: (_, { id }) => db.sequelize
+      .transaction(async (transaction) => {
+        const ownedBook = await OwnedBook.findById(id, { transaction });
+        ownedBook.set('available', false);
+        await ownedBook.save({ transaction });
 
-          await voidTrade(id, transaction);
-        })
-        .catch((err) => {
-          console.error(err);
-          throw err;
-        }),
+        await voidTrade(id, transaction);
+      })
+      .catch((err) => {
+        console.error(err);
+        throw err;
+      }),
     createTrade: (_, { bookIds, userId }) => {
       const trade = {
         id: uuid(),
@@ -78,7 +80,7 @@ export default {
         status: 0,
         createdAt: new Date(),
       };
-      const tradeBooks = bookIds.map(bookId => ({
+      const tradeBooks = bookIds.map((bookId) => ({
         id: uuid(),
         tradeId: trade.id,
         bookId,
@@ -110,7 +112,7 @@ export default {
           .transaction(async (transaction) => {
             await trade.save({ transaction });
             const tradeBooks = await trade.getTradeBooks({ transaction });
-            const bookIds = tradeBooks.map(b => b.bookId);
+            const bookIds = tradeBooks.map((b) => b.bookId);
 
             // Set books unavailable
             await OwnedBook.update(
@@ -225,3 +227,5 @@ export default {
     },
   },
 };
+
+export default resolvers;

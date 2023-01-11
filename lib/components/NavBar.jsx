@@ -17,7 +17,6 @@ function NavBar({ session }) {
           {session && <Nav.Link href="/profile">Profile</Nav.Link>}
         </Nav>
       </Navbar.Collapse>
-
     </Navbar>
   );
 }

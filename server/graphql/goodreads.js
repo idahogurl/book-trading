@@ -1,24 +1,23 @@
-import { get } from 'axios';
+import fetch from 'node-fetch';
 import { Parser } from 'xml2js';
 import { Op } from 'sequelize-cockroachdb';
-import { OwnedBook } from '../../server/db/models';
+import db from '../db/models';
 
 const goodReadsRequest = async function goodReadsRequest({ q, field, userId }) {
   try {
     const apiUrl = 'https://www.goodreads.com/search';
-
-    const params = {
+    const params = new URLSearchParams({
       key: process.env.GOODREADS_KEY,
       q,
       'search[field]': field,
-    };
+    });
 
-    const { data } = await get(apiUrl, { params });
-
+    const data = await fetch(`${apiUrl}?${params.toString()}`);
+    const results = await data.text();
     const parser = new Parser({ strict: false });
 
     const promise = new Promise((resolve, reject) => {
-      parser.parseString(data, (err, result) => {
+      parser.parseString(results, (err, result) => {
         if (err) reject(err);
         resolve(result);
       });
@@ -35,9 +34,9 @@ const goodReadsRequest = async function goodReadsRequest({ q, field, userId }) {
     }));
 
     const ids = books.map((b) => b.id);
-    const ownedBooks = await OwnedBook.findAll({
+    const ownedBooks = userId ? await db.OwnedBook.findAll({
       where: { book_id: { [Op.in]: ids }, userId },
-    });
+    }) : [];
 
     ownedBooks.forEach((o) => {
       const index = books.findIndex((b) => b.id === o.bookId);

@@ -1,8 +1,7 @@
-import PropTypes from 'prop-types';
-
+import SharedPropTypes from '../utils/propTypes';
 import Book from './Book';
 
-const AvailableBookRow = function AvailableBookRow(props) {
+function AvailableBookRow(props) {
   const { book } = props;
   const button = (
     <span>
@@ -13,10 +12,10 @@ const AvailableBookRow = function AvailableBookRow(props) {
   );
 
   return <Book book={book} button={button} />;
-};
+}
 
 AvailableBookRow.propTypes = {
-  book: PropTypes.shape({}).isRequired,
+  book: SharedPropTypes.book.isRequired,
 };
 
 export default AvailableBookRow;

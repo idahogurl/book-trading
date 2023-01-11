@@ -1,36 +1,39 @@
-// File is auto-generated. Do not modify!!
-/* eslint-disable */
-var fs = require('fs');
-var path = require('path');
-var Sequelize = require('sequelize-cockroachdb');
+import Sequelize from 'sequelize-cockroachdb';
+import configs from '../config/config.json';
+import OwnedBook from './ownedBook';
+import Trade from './trade';
+import TradeBook from './tradeBook';
+import User from './user';
 
-var db = {};
+const env = process.env.NODE_ENV || 'development';
+const config = configs[env];
 
-try {
-  var basename = path.basename(__filename);
-  var env = process.env.NODE_ENV || 'development';
-  var config = require(`${__dirname}/../config/config.json`)[env];
-
-  var sequelize = new Sequelize(config.database, config.username, config.password, config);
-
-  fs
-  .readdirSync(__dirname)
-  .filter(file => (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js'))
-  .forEach((file) => {
-    var model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
-    db[model.name] = model;
-  });
-
-  Object.keys(db).forEach((modelName) => {
-    if (db[modelName].associate) {
-      db[modelName].associate(db);
-    }
-  });
-
-  db.sequelize = sequelize;
-  db.Sequelize = Sequelize;
-} catch (e) {
-  console.error(e);
+let sequelize;
+if (config.use_env_variable) {
+  sequelize = new Sequelize(process.env[config.use_env_variable], config);
+} else {
+  sequelize = new Sequelize(
+    config.database,
+    config.username,
+    config.password,
+    config,
+  );
 }
 
-module.exports = db;
+const db = {
+  OwnedBook: OwnedBook(sequelize, Sequelize.DataTypes),
+  Trade: Trade(sequelize, Sequelize.DataTypes),
+  TradeBook: TradeBook(sequelize, Sequelize.DataTypes),
+  User: User(sequelize, Sequelize.DataTypes),
+};
+
+Object.keys(db).forEach((modelName) => {
+  if (db[modelName].associate) {
+    db[modelName].associate(db);
+  }
+});
+
+db.Sequelize = Sequelize;
+db.sequelize = sequelize;
+
+export default db;

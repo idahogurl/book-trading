@@ -1,5 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import PropTypes from 'prop-types';
+import SharedPropTypes from '../propTypes';
+
 import Card from './Card';
 
 const Book = function Book(props) {
@@ -43,14 +45,7 @@ const Book = function Book(props) {
 };
 
 Book.propTypes = {
-  book: PropTypes.shape({
-    imageUrl: PropTypes.string,
-    title: PropTypes.string,
-    user: PropTypes.shape({
-      name: PropTypes.string,
-      location: PropTypes.string,
-    }),
-  }).isRequired,
+  book: SharedPropTypes.book.isRequired,
   button: PropTypes.element,
 };
 
