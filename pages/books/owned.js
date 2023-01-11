@@ -4,9 +4,8 @@
 import React, { Fragment, PureComponent } from 'react';
 import { Query, Mutation } from 'react-apollo';
 import { Link } from 'react-router-dom';
-import RouterPropTypes from 'react-router-prop-types';
 
-import GET_BOOKS from '../graphql/GetBooks.gql';
+import GET_BOOKS from '../../lib/graphql/GetBooks.gql';
 import DELETE_MUTATION from '../graphql/DeleteOwnedBook.gql';
 
 import Spinner from '../components/Spinner';

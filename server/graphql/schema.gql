@@ -14,7 +14,6 @@ type Mutation {
 }
 
 input CreateOwnedBookInput {
-  id: UUID
   bookId: String
   userId: String
   title: String
@@ -96,7 +95,7 @@ type Book {
   author: String
   imageUrl: String
   publicationYear: Int
-  owned: Boolean
+  userId: String
 }
 
 type Trade {

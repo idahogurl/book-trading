@@ -5,6 +5,6 @@ query goodreads($q: String, $field: String, $userId: String) {
     author
     publicationYear
     imageUrl
-    owned
+    userId
   }
 }

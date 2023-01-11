@@ -16,6 +16,13 @@ const fields = [
   { id: 'all', name: 'ISBN' },
 ];
 
+function getResultsText(data) {
+  if (!data) return null;
+
+  if (data.goodreads[0]) return null;
+
+  return 'No books found';
+}
 function AddBooksForm({ sessionUserId }) {
   const [getGoodReadsBooks, { error, data }] = useLazyQuery(GET_GOODREADS_BOOKS, {
     fetchPolicy: 'no-cache',
@@ -23,6 +30,9 @@ function AddBooksForm({ sessionUserId }) {
   if (!sessionUserId) {
     return <Card text="Log in to view books" />;
   }
+  // should probably do paging
+  const noResultsText = getResultsText(data);
+
   return (
     <Formik
       initialValues={{ q: 'Five Kingdoms', field: 'title' }}
@@ -83,7 +93,7 @@ function AddBooksForm({ sessionUserId }) {
               <div className="d-flex flex-wrap">
                 <BookList
                   books={data?.goodreads || []}
-                  noResultsText={data?.goodreads ? null : 'No Books Found'}
+                  noResultsText={noResultsText}
                   render={({ book }) => (
                     <AddBookRow
                       key={book.id}

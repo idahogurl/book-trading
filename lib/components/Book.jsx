@@ -9,14 +9,15 @@ const Book = function Book(props) {
 
   const header = (
     <div className="card-img-top">
-      <img src={book.imageUrl} className="mt-2" alt="" />
+      <img src={book.imageUrl} className="mt-2" alt="" width="111" height="148" />
     </div>
   );
 
   const text = (
     <>
       <strong>Publication Year:</strong>
-
+      {' '}
+      {book.publicationYear ? 'Unavailable' : null}
       <br />
       {book.user && (
         <small className="text-muted">
@@ -31,7 +32,7 @@ const Book = function Book(props) {
     </>
   );
 
-  const footer = button && <div className="card-footer">{button}</div>;
+  const footer = button && <div className="card-footer" style={{ minHeight: '53px' }}>{button}</div>;
 
   return (
     <Card

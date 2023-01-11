@@ -3,15 +3,17 @@ import Book from './Book';
 
 function AvailableBookRow(props) {
   const { book } = props;
-  const button = (
-    <span>
-      Requests
-      {' '}
-      <span className="badge badge-light">{book.requestCount ? book.requestCount : 0}</span>
-    </span>
-  );
 
-  return <Book book={book} button={button} />;
+  return (
+    <>
+      <Book book={book} />
+      <span>
+        Requests
+        {' '}
+        <span className="badge badge-light">{book.requestCount ? book.requestCount : 0}</span>
+      </span>
+    </>
+  );
 }
 
 AvailableBookRow.propTypes = {

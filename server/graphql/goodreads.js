@@ -25,6 +25,12 @@ const goodReadsRequest = async function goodReadsRequest({ q, field, userId }) {
 
     const response = await promise;
 
+    /*
+    <results-start>1</results-start>
+<results-end>20</results-end>
+<total-results>906</total-results>
+    */
+   
     const books = response.GOODREADSRESPONSE.SEARCH[0].RESULTS[0].WORK.map((w) => ({
       publicationYear: w.ORIGINAL_PUBLICATION_YEAR[0]._,
       id: w.BEST_BOOK[0].ID[0]._,
@@ -40,7 +46,7 @@ const goodReadsRequest = async function goodReadsRequest({ q, field, userId }) {
 
     ownedBooks.forEach((o) => {
       const index = books.findIndex((b) => b.id === o.bookId);
-      books[index].owned = true;
+      books[index].userId = userId;
     });
 
     return books;
