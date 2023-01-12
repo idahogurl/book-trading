@@ -1,73 +1,53 @@
-// Indicate part of pending trade?
-// Link to trade. Just use My Trades and filter by id?
-
-import React, { Fragment, PureComponent } from 'react';
-import { Query, Mutation } from 'react-apollo';
-import { Link } from 'react-router-dom';
+import { useSession } from 'next-auth/react';
+import { useQuery } from '@apollo/client';
+import Link from 'next/link';
 
 import GET_BOOKS from '../../lib/graphql/GetBooks.gql';
-import DELETE_MUTATION from '../graphql/DeleteOwnedBook.gql';
 
-import Spinner from '../components/Spinner';
-import BookList from '../components/BookList';
-import MyBookRow from '../components/MyBookRow';
+import Layout from '../../lib/components/Layout';
+import Spinner from '../../lib/components/Spinner';
+import ErrorNotification from '../../lib/components/ErrorNotification';
+import BookList from '../../lib/components/BookList';
+import MyBookRow from '../../lib/components/MyBookRow';
 
-import { onError } from '../utils/notifications';
+function MyBooks() {
+  const { data: session } = useSession();
+  const sessionUserId = session?.user.id;
 
-const userId = 'currentUser' in sessionStorage ? sessionStorage.getItem('currentUser') : null;
+  const {
+    loading, data, error, refetch,
+  } = useQuery(GET_BOOKS, {
+    variables: { where: JSON.stringify({ userId: sessionUserId, available: true }) },
+    fetchPolicy: 'network-only',
+  });
 
-class MyBooks extends PureComponent {
-  onDeleteClick = this.onDeleteClick.bind(this);
+  // NOTE: Better to use refetch function. 'refreshQueries' is available
+  // in the mutation but it causes the query to run twice
 
-  onDeleteClick() {
-    const { history } = this.props;
-    history.go(0);
-  }
-
-  render() {
-    return (
-      <>
-        <h1>My Books</h1>
-        <Link to="/books/add" className="btn btn-primary mb-3">
-          Add Book
-        </Link>
-        <Mutation mutation={DELETE_MUTATION}>
-          {(deleteMutation) => (
-            <Query
-              query={GET_BOOKS}
-              variables={{ where: JSON.stringify({ userId, available: true }) }}
-              fetchPolicy="network-only"
-            >
-              {({ data, loading, error }) => {
-                if (error) onError(error);
-                if (loading) return <Spinner />;
-
-                return (
-                  <BookList
-                    books={data.ownedBooks}
-                    render={({ book }) => (
-                      <MyBookRow
-                        key={book.id}
-                        book={book}
-                        deleteMutation={deleteMutation}
-                        onDeleteClick={this.onDeleteClick}
-                      />
-                    )}
-                  />
-                );
-              }}
-            </Query>
+  return (
+    <Layout>
+      <h1>My Books</h1>
+      <Link href="/books/add" className="btn btn-primary mb-3">
+        Add Book
+      </Link>
+      {loading && <div><Spinner /></div>}
+      {error && <ErrorNotification onDismiss={refetch} />}
+      <div className="d-flex flex-wrap">
+        <BookList
+          books={data?.ownedBooks || []}
+          sessionUserId={sessionUserId}
+          render={({ book }) => (
+            <MyBookRow
+              key={book.id}
+              book={book}
+              sessionUserId={sessionUserId}
+              refetch={refetch}
+            />
           )}
-        </Mutation>
-      </>
-    );
-  }
+        />
+      </div>
+    </Layout>
+  );
 }
 
-MyBooks.propTypes = {
-  history: RouterPropTypes.history.isRequired,
-};
-
 export default MyBooks;
-
-// show # of trade requests

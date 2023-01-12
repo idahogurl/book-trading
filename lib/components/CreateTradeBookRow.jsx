@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import cs from 'classnames';
 
-import SharedPropTypes from '../utils/propTypes';
+import SharedPropTypes from '../propTypes';
 import Book from './Book';
 
-function TradeBookRow({ book, onClick, selected }) {
+function CreateTradeBookRow({ book, onClick, selected }) {
   // save or remove
   const button = (
     <button
@@ -24,10 +24,10 @@ function TradeBookRow({ book, onClick, selected }) {
   return <Book book={book} button={button} />;
 }
 
-TradeBookRow.propTypes = {
+CreateTradeBookRow.propTypes = {
   book: SharedPropTypes.book.isRequired,
   selected: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
 };
 
-export default TradeBookRow;
+export default CreateTradeBookRow;

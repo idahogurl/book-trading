@@ -5,7 +5,7 @@ import SharedPropTypes from '../propTypes';
 import Card from './Card';
 
 const Book = function Book(props) {
-  const { book, button } = props;
+  const { book, button, sessionUserId } = props;
 
   const header = (
     <div className="card-img-top">
@@ -19,7 +19,7 @@ const Book = function Book(props) {
       {' '}
       {book.publicationYear ? 'Unavailable' : null}
       <br />
-      {book.user && (
+      {book.user && book.user.id !== sessionUserId && (
         <small className="text-muted">
           from
           {' '}

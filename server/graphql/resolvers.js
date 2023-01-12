@@ -29,7 +29,7 @@ const voidTrade = function voidTrade(bookIds, transaction) {
     {
       where: {
         id: {
-          [Op.in]: db.sequelize.literal(`(SELECT trade_id FROM trade_books WHERE book_id IN ('${bookIds}'))`),
+          [Op.in]: db.sequelize.literal(`(SELECT trade_id FROM trade_book WHERE book_id IN ('${bookIds}'))`),
         },
         status: 0,
       },
@@ -62,7 +62,7 @@ const resolvers = {
       }),
     deleteOwnedBook: (_, { id }) => db.sequelize
       .transaction(async (transaction) => {
-        const ownedBook = await OwnedBook.findById(id, { transaction });
+        const ownedBook = await OwnedBook.findByPk(id, { transaction });
         ownedBook.set('available', false);
         await ownedBook.save({ transaction });
 
@@ -100,7 +100,7 @@ const resolvers = {
     },
     updateTrade: async (_, { id, status }) => {
       // Update trade status
-      const trade = await Trade.findById(id);
+      const trade = await Trade.findByPk(id);
       trade.set('status', status);
 
       // If trade is accepted, then:
@@ -147,7 +147,7 @@ const resolvers = {
       return user;
     },
     updateUser: async (_, { id, fullName, location }) => {
-      const user = await User.findById(id);
+      const user = await User.findByPk(id);
       await user.update({ fullName, location });
       return user;
     },
@@ -179,7 +179,7 @@ const resolvers = {
       });
     },
     ownedBook: async (_, { id }) => {
-      const book = await OwnedBook.findById(id);
+      const book = await OwnedBook.findByPk(id);
       return book;
     },
     trades: async (_, {
@@ -199,7 +199,7 @@ const resolvers = {
       return users;
     },
     user: async (_, { id }) => {
-      const user = await User.findById(id);
+      const user = await User.findByPk(id);
       return user;
     },
     goodreads: async (_, { q, field, userId }) => {
