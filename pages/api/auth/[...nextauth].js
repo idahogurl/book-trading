@@ -5,9 +5,23 @@ import pg from 'pg';
 import Sequelize from 'sequelize-cockroachdb';
 import SequelizeAdapter from '@next-auth/sequelize-adapter';
 import User from '../../../server/db/models/user';
+import configs from '../../../server/db/config/config.json';
 
 // https://sequelize.org/master/manual/getting-started.html#connecting-to-a-database
-const sequelize = new Sequelize(process.env.DATABASE_URL);
+const env = process.env.NODE_ENV || 'development';
+const config = configs[env];
+
+let sequelize;
+if (config.use_env_variable) {
+  sequelize = new Sequelize(process.env[config.use_env_variable], config);
+} else {
+  sequelize = new Sequelize(
+    config.database,
+    config.username,
+    config.password,
+    config,
+  );
+}
 
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options

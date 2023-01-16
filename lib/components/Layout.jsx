@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import Image from 'next/image';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import NavBar from './NavBar';
@@ -29,5 +30,9 @@ function Layout({ children }) {
     </div>
   );
 }
+
+Layout.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 export default Layout;

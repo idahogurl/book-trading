@@ -46,6 +46,7 @@ TradeActionRow.propTypes = {
   trade: PropTypes.shape({
     id: PropTypes.string.isRequired,
   }).isRequired,
+  refetch: PropTypes.func.isRequired,
 };
 
 export function TradeBookList({ heading, children }) {
