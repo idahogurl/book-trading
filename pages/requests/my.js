@@ -1,12 +1,9 @@
-// Reject or Accept
 // Accepted trades voids pending trades containing these books
 
 import { useSession } from 'next-auth/react';
-import { useQuery, useLazyQuery } from '@apollo/client';
-
+import { useQuery } from '@apollo/client';
 
 import GET_REQUESTS from '../../lib/graphql/GetRequests.gql';
-import UPDATE_TRADE from '../../lib/graphql/UpdateTrade.gql';
 
 import Layout from '../../lib/components/Layout';
 import Spinner from '../../lib/components/Spinner';
@@ -16,19 +13,14 @@ import Card from '../../lib/components/Card';
 import ErrorNotification from '../../lib/components/ErrorNotification';
 import { RequestedTradeRow, TradeBookList } from '../../lib/components/RequestedTradeRow';
 
-
 function MyRequests() {
   const { data: session } = useSession();
 
   const sessionUserId = session?.user.id;
 
-  // TODO: Make button work
-  // function onClick(id, status) {
-  //   const { updateTrade } = this.props;
-  //   updateTrade({ variables: { id, status } });
-  // }
-
-  const { loading, error, data } = useQuery(GET_REQUESTS, {
+  const {
+    loading, error, data, refetch,
+  } = useQuery(GET_REQUESTS, {
     fetchPolicy: 'network-only',
   });
 
@@ -42,7 +34,7 @@ function MyRequests() {
     const isRequester = t.userId === sessionUserId;
     const requesterName = isRequester ? 'I' : otherUserBooks[0].user.screenName;
 
-    const otherUserBookList = (
+    const receivingBookList = (
       <TradeBookList heading={`${requesterName} ${isRequester ? 'want' : 'wants'}`}>
         <BookList
           books={isRequester ? otherUserBooks : currentUserBooks}
@@ -51,7 +43,7 @@ function MyRequests() {
       </TradeBookList>
     );
 
-    const requesterBookList = (
+    const requestedBookList = (
       <TradeBookList heading={`${requesterName} will give`}>
         <BookList
           books={isRequester ? otherUserBooks : currentUserBooks}
@@ -65,8 +57,9 @@ function MyRequests() {
         key={t.id}
         trade={t}
         isRequester={isRequester}
-        requesterBookList={requesterBookList}
-        otherUserBookList={otherUserBookList}
+        requestedBookList={requestedBookList}
+        receivingBookList={receivingBookList}
+        refetch={refetch}
       />
     );
   });

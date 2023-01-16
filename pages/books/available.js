@@ -8,6 +8,8 @@ import AvailableBookRow from '../../lib/components/AvailableBookRow';
 import Layout from '../../lib/components/Layout';
 import client from '../../lib/apolloClient';
 
+// TODO: Add button to start a trade?
+
 const AvailableBooks = function AvailableBooks({ ownedBooks }) {
   const { data: session } = useSession();
 
