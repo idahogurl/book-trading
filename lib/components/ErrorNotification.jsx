@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faWarning } from '@fortawesome/free-solid-svg-icons';
+import { faWarning, faClose } from '@fortawesome/free-solid-svg-icons';
 
 const darkRed = '#a92019';
 const lightRed = '#f0a29d';
@@ -29,7 +29,7 @@ function ErrorNotification({ message, onDismiss }) {
             aria-label="Close"
             style={dismissButtonStyle}
           >
-            X
+            <FontAwesomeIcon icon={faClose} />
           </button>
           )}
         </div>

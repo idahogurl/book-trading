@@ -25,24 +25,21 @@ function getResultsText(data) {
   return 'No books found';
 }
 
-function AddBooks() {
-  const { data: session } = useSession();
-  const sessionUserId = session?.user.id;
-
+function AddBooksForm({ sessionUserId }) {
   const [getGoodReadsBooks, { error, data }] = useLazyQuery(GET_GOODREADS_BOOKS, {
     fetchPolicy: 'no-cache',
   });
-  if (!sessionUserId) {
-    return <Card text="Log in to view books" />;
-  }
+
   // should probably do paging
   const noResultsText = getResultsText(data);
 
   return (
-    <Layout>
-      <h1>Add Books to Owned</h1>
+    <div>
       <Formik
-        initialValues={{ q: 'Five Kingdoms', field: 'title' }}
+        initialValues={{
+          q: 'Five Kingdoms',
+          field: 'title',
+        }}
         onSubmit={async (values, { setSubmitting }) => {
           try {
             await getGoodReadsBooks({
@@ -55,13 +52,17 @@ function AddBooks() {
             setSubmitting(false);
           }
         }}
+        validate={(values) => {
+          const errors = {};
+
+          if (!values.q) {
+            errors.q = 'Required';
+          }
+
+          return errors;
+        }}
       >
-        {({
-          values,
-          handleChange,
-          handleSubmit,
-          isSubmitting,
-        }) => (
+        {({ values, errors, handleChange, handleSubmit, isSubmitting }) => (
           <div>
             <form onSubmit={handleSubmit}>
               <input
@@ -70,8 +71,8 @@ function AddBooks() {
                 className="form-control d-inline-block w-75"
                 onChange={handleChange}
                 value={values.q}
-              />
-              {' '}
+              />{' '}
+              {errors.trade && <div className="text-danger">{errors.trade}</div>}
               <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
                 Find
               </button>
@@ -86,8 +87,7 @@ function AddBooks() {
                         checked={values.field === field.id}
                         onChange={handleChange}
                         className="form-check-input"
-                      />
-                      {' '}
+                      />{' '}
                       {field.name}
                     </label>
                   </div>
@@ -95,26 +95,39 @@ function AddBooks() {
               </div>
             </form>
             {error ? <ErrorNotification /> : null}
-            {isSubmitting ? <Spinner />
-              : (
-                <div className="d-flex flex-wrap">
-                  <BookList
-                    books={data?.goodreads || []}
-                    noResultsText={noResultsText}
-                    render={({ book }) => (
-                      <AddBookRow
-                        key={book.id}
-                        sessionUserId={sessionUserId}
-                        book={book}
-                      />
-                    )}
-                    sessionUserId={sessionUserId}
-                  />
-                </div>
-              )}
+            {isSubmitting ? (
+              <Spinner />
+            ) : (
+              <div className="d-flex flex-wrap">
+                <BookList
+                  books={data?.goodreads || []}
+                  noResultsText={noResultsText}
+                  render={({ book }) => (
+                    <AddBookRow key={book.id} sessionUserId={sessionUserId} book={book} />
+                  )}
+                  sessionUserId={sessionUserId}
+                />
+              </div>
+            )}
           </div>
         )}
       </Formik>
+    </div>
+  );
+}
+
+function AddBooks() {
+  const { data: session } = useSession();
+  const sessionUserId = session?.user.id;
+
+  return (
+    <Layout>
+      <h1 className="mt-3 mb-3">Add Books to Owned</h1>
+      {sessionUserId ? (
+        <AddBooksForm sessionUserId={sessionUserId} />
+      ) : (
+        <Card text="Log in to view books" />
+      )}
     </Layout>
   );
 }

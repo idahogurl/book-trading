@@ -68,11 +68,13 @@ function MyRequests() {
       {error ? <ErrorNotification /> : null}
       {tradeRows}
     </>
-  ) : (<Card text="Log in to view your requests" />);
+  ) : (
+    <Card text="Log in to view your requests" />
+  );
 
   return (
     <Layout>
-      <h1>My Requests</h1>
+      <h1 className="mt-3 mb-3">My Requests</h1>
       {tradeRows.length ? children : <Card text="No requests found" />}
     </Layout>
   );
