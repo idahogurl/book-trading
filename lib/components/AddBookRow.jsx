@@ -16,6 +16,7 @@ function AddBookButton({ book, sessionUserId }) {
 
   const displayBook = data?.createOwnedBook || book;
 
+  // TODO: Could add useCallback if performance becomes an issue
   async function onClick() {
     const {
       id, title, author, imageUrl, publicationYear,
@@ -36,6 +37,7 @@ function AddBookButton({ book, sessionUserId }) {
 
   if (loading) return <Spinner />;
 
+  const isOwned = isLoggedIn && displayBook.userId && displayBook.available;
   return (
     <>
       {error && <ErrorNotification message="Unable to add book. Please try again." />}
@@ -43,10 +45,10 @@ function AddBookButton({ book, sessionUserId }) {
         type="button"
         onClick={onClick}
         className={cs('btn btn-primary', {
-          disabled: isLoggedIn && displayBook.userId,
+          disabled: isOwned,
         })}
       >
-        {isLoggedIn && displayBook.userId ? 'Book is Owned' : 'Add to Owned'}
+        {isOwned ? 'Book is Owned' : 'Add to Owned'}
       </button>
     </>
   );

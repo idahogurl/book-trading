@@ -32,6 +32,7 @@ function MyBooks() {
       </Link>
       {loading && <div><Spinner /></div>}
       {error && <ErrorNotification onDismiss={refetch} />}
+      {!loading && (
       <div className="d-flex flex-wrap">
         <BookList
           books={data?.ownedBooks || []}
@@ -46,6 +47,7 @@ function MyBooks() {
           )}
         />
       </div>
+      )}
     </Layout>
   );
 }

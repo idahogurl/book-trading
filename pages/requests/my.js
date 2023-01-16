@@ -1,5 +1,3 @@
-// Accepted trades voids pending trades containing these books
-
 import { useSession } from 'next-auth/react';
 import { useQuery } from '@apollo/client';
 

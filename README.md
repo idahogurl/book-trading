@@ -10,30 +10,29 @@ Fulfill the below user stories. Use whichever libraries or APIs you need. Give i
 
 **User Stories**
 * I can view all books posted by every user.
-* I can add a new book. DONE
+* I can add a new book.
 * I can update my settings to store my full name, city, and state.
 * I can propose a trade and wait for the other user to accept the trade.
 
+**Future User Stories**
+- I can add/remove books from the Available Books page to my trade cart
+- I can add/remove books from the My Books page to my trade cart
+- I can see and modify my trade cart before I submit my trade
+- I can search my books
+- I can search available books
+
 ### Technology
 **Backend:**
- - Node Express (v4)
- - Babel (v7 with presets env & react)
- - Sequelize (v4)
- - GraphQL Express Server
+ - Next.js (v13)
+ - Sequelize (v6)
+ - Apollo GraphQL Server
+ - Postgres
 
 **APIs:**
  - Facebook Login
  - GoodReads
 
-**Database:**
-- Development: SQLITE
-- Production: Postgres
-
 **Frontend:**
- - React (v16.4)
- - React Router (v4)
- - Apollo GraphQL Client (v2.1)
- - Bootstrap (v4)
- - FontAwesome (v4)
- - Fela
- - Awesome Notifications
+ - Apollo GraphQL Client (v3)
+ - Bootstrap (v5)
+ - FontAwesome (v6)
