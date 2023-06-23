@@ -6,5 +6,6 @@ query goodreads($q: String, $field: String, $userId: String) {
     publicationYear
     imageUrl
     userId
+    available
   }
 }

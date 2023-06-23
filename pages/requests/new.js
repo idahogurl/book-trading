@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { Formik } from 'formik';
-import { useMutation, useLazyQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 
 import GET_BOOKS from '../../lib/graphql/GetBooks.gql';
 import CREATE_TRADE from '../../lib/graphql/CreateTrade.gql';
@@ -26,21 +26,23 @@ function SubmitTradeButton({ books, sessionUserId }) {
 
   return (
     <Formik
+      initialValues={{
+        trade: '',
+      }}
       onSubmit={async () => {
         await createTrade({
           variables: { bookIds: books.map((b) => b.id), userId: sessionUserId },
         });
-        router.back();
+        router.push('/requests/my');
       }}
       validate={() => {
         const errors = {};
         // Do both sides have selections? (check for books not owned by current user)
-        const otherUser = books.filter((b) => b.bookUserId !== sessionUserId);
-
-        if (books.length && otherUser.length) {
+        const otherUser = books.filter((b) => b.user.id !== sessionUserId);
+        if (books.length - otherUser.length && otherUser.length) {
           // Are the selections from the same user?
-          const firstId = otherUser[0].userId;
-          if (!otherUser.every((o) => o.userId === firstId)) {
+          const firstId = otherUser[0].user.id;
+          if (!otherUser.every((o) => o.user.id === firstId)) {
             errors.trade = 'Choose selections from only one user';
           }
         } else {
@@ -51,7 +53,7 @@ function SubmitTradeButton({ books, sessionUserId }) {
     >
       {({ handleSubmit, isSubmitting, errors }) => (
         <form onSubmit={handleSubmit}>
-          {errors.trade && <div className="text-danger">{errors.trade}</div>}
+          {errors.trade && <ErrorNotification message={errors.trade} />}
           <button
             type="submit"
             className="btn btn-primary mt-4 mb-4 d-block"
@@ -74,25 +76,33 @@ SubmitTradeButton.defaultProps = {
   sessionUserId: undefined,
 };
 
+function addBook({
+  setBooks, bookToAdd,
+}) {
+  setBooks((prevState) => {
+    // Object.assign would also work
+    const book = prevState.find((b) => b.id === bookToAdd.id);
+    if (book) {
+      // remove book
+      return prevState.filter((b) => b.id !== bookToAdd.id);
+    }
+    return [...prevState, bookToAdd];
+  });
+}
+
 function RequestForm({ sessionUserId }) {
+  const [books, setBooks] = useState([]);
+
   const {
     data, loading, error, refetch,
-  } = useLazyQuery(GET_BOOKS, {
+  } = useQuery(GET_BOOKS, {
     variables: { where: JSON.stringify({ available: true }) },
     fetchPolicy: 'network-only',
   });
 
-  const [books, setBooks] = useState([]);
-
-  function addBook({ id, userId: bookUserId }) {
-    const book = books.find((b) => b.id === id);
-    if (book) {
-      setBooks(books.filter((b) => b.id !== id));
-    } else {
-      books.push({ id, bookUserId });
-      setBooks(books);
-    }
-  }
+  // TODO: what if there are no books available?
+  if (loading) return <Spinner />;
+  if (error) return <ErrorNotification onDismiss={refetch} />;
 
   const myBooks = data?.ownedBooks.filter((o) => o.user.id === sessionUserId);
   const availableBooks = data?.ownedBooks.filter((o) => o.user.id !== sessionUserId);
@@ -101,51 +111,43 @@ function RequestForm({ sessionUserId }) {
     <div>
       {error && <ErrorNotification />}
       {loading && <Spinner />}
+      <h2 className="h3 mt-4">My Books</h2>
       <div className="d-flex flex-wrap">
-        <div className="mr-4">
-          <h2 className="h3 mt-4">My Books</h2>
-          <BookList
-            books={myBooks}
-            sessionUserId={sessionUserId}
-            render={({ book }) => (
-              <RequestTradeBookRow
-                key={book.id}
-                book={book}
-                onClick={() => addBook({
-                  id: book.id,
-                  bookUserId: sessionUserId,
-                })}
-                selected={books.findIndex((b) => b.id === book.id) !== -1}
-              />
-            )}
-          />
-        </div>
-        <div>
-          <h2 className="h3 mt-4">Available Books</h2>
-          <BookList
-            books={availableBooks}
-            sessionUserId={sessionUserId}
-            render={({ book }) => (
-              <RequestTradeBookRow
-                key={book.id}
-                book={book}
-                onClick={() => addBook({
-                  id: book.id,
-                  bookUserId: book.userId,
-                })}
-                selected={books.findIndex((b) => b.id === book.id) !== -1}
-              />
-            )}
-          />
-        </div>
+        <BookList
+          books={myBooks}
+          sessionUserId={sessionUserId}
+          render={({ book }) => (
+            <RequestTradeBookRow
+              key={book.id}
+              book={book}
+              onClick={() => addBook({
+                setBooks,
+                bookToAdd: book,
+              })}
+              selected={books.findIndex((b) => b.id === book.id) !== -1}
+            />
+          )}
+        />
       </div>
-      <div
-        style={{
-          width: '38em',
-        }}
-      >
-        <SubmitTradeButton books={books} sessionUserId={sessionUserId} refetch={refetch} />
+      <h2 className="h3 mt-4">Available Books</h2>
+      <div className="d-flex flex-wrap">
+        <BookList
+          books={availableBooks}
+          sessionUserId={sessionUserId}
+          render={({ book }) => (
+            <RequestTradeBookRow
+              key={book.id}
+              book={book}
+              onClick={() => addBook({
+                setBooks,
+                bookToAdd: book,
+              })}
+              selected={books.findIndex((b) => b.id === book.id) !== -1}
+            />
+          )}
+        />
       </div>
+      <SubmitTradeButton books={books} sessionUserId={sessionUserId} refetch={refetch} />
     </div>
   );
 }
@@ -162,7 +164,7 @@ function RequestTrade() {
 
   return (
     <Layout>
-      <h1 className="mt-3 mb-3">Create Trade</h1>
+      <h1 className="mt-3 mb-3">Create Trade Request</h1>
       {sessionUserId ? (
         <RequestForm sessionUserId={sessionUserId} />
       ) : (

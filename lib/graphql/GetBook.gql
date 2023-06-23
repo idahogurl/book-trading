@@ -7,7 +7,7 @@ query getBook($id: String) {
     imageUrl
     user {
       id
-      screenName
+      name
       location
     }
   }

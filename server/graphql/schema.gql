@@ -9,8 +9,8 @@ type Mutation {
   deleteOwnedBook(id: String!): Void
   createTrade(bookIds: [String], userId: String): CreateTradeResult
   updateTrade(id: String, status: Int): Trade
-  createUser(id: String, fullName: String, location: String): User
-  updateUser(id: String, fullName: String, location: String): User
+  createUser(id: String, name: String, location: String): User
+  updateUser(id: String, name: String, location: String): User
 }
 
 input CreateOwnedBookInput {
@@ -32,12 +32,7 @@ type OwnedBook {
   id: UUID
   bookId: String
   userId: String
-  trades(
-    limit: Int
-    order: String
-    where: JSON
-    offset: Int
-  ): [Trade]
+  trades(limit: Int, order: String, where: JSON, offset: Int): [Trade]
   user: User
   title: String
   author: String
@@ -48,45 +43,19 @@ type OwnedBook {
 }
 
 type Query {
-  ownedBooks(
-    limit: Int
-    order: String
-    where: JSON
-    offset: Int
-  ): [OwnedBook]
+  ownedBooks(limit: Int, order: String, where: JSON, offset: Int): [OwnedBook]
 
-  ownedBook(
-    id: String
-  ): OwnedBook
+  ownedBook(id: String): OwnedBook
 
-  trades(
-    limit: Int
-    order: String
-    where: JSON
-    offset: Int
-  ): [Trade]
+  trades(limit: Int, order: String, where: JSON, offset: Int): [Trade]
 
-  trade(
-    bookId: String
-    userId: String
-  ): Trade
+  trade(bookId: String, userId: String): Trade
 
-  users(
-    limit: Int
-    order: String
-    where: JSON
-    offset: Int
-  ): [User]
+  users(limit: Int, order: String, where: JSON, offset: Int): [User]
 
-  user(
-    id: String
-  ): User
+  user(id: String): User
 
-  goodreads(
-    q: String
-    field: String
-    userId: String
-  ): [Book]
+  goodreads(q: String, field: String, userId: String): [Book]
 }
 
 type Book {
@@ -96,6 +65,7 @@ type Book {
   imageUrl: String
   publicationYear: Int
   userId: String
+  available: Boolean
 }
 
 type Trade {
@@ -121,10 +91,5 @@ type User {
   name: String
   location: String
   email: String
-  ownedBooks(
-    limit: Int
-    order: String
-    where: JSON
-    offset: Int
-  ): [OwnedBook]
+  ownedBooks(limit: Int, order: String, where: JSON, offset: Int): [OwnedBook]
 }

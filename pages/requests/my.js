@@ -16,6 +16,8 @@ function MyRequests() {
 
   const sessionUserId = session?.user.id;
 
+  // TODO: Improve performance. Will query no matter if user is logged in or not
+  // and gets all requests and then filters
   const {
     loading, error, data, refetch,
   } = useQuery(GET_REQUESTS, {
@@ -37,6 +39,7 @@ function MyRequests() {
         <BookList
           books={isRequester ? otherUserBooks : currentUserBooks}
           render={({ book }) => <Book key={book.id} book={book} />}
+          sessionUserId={sessionUserId}
         />
       </TradeBookList>
     );
@@ -44,8 +47,9 @@ function MyRequests() {
     const requestedBookList = (
       <TradeBookList heading={`${requesterName} will give`}>
         <BookList
-          books={isRequester ? otherUserBooks : currentUserBooks}
+          books={isRequester ? currentUserBooks : otherUserBooks}
           render={({ book }) => <Book key={book.id} book={book} />}
+          sessionUserId={sessionUserId}
         />
       </TradeBookList>
     );
@@ -66,7 +70,7 @@ function MyRequests() {
     <>
       {loading ? <Spinner /> : null}
       {error ? <ErrorNotification /> : null}
-      {tradeRows}
+      {tradeRows?.length ? tradeRows : <Card text="No requests found" />}
     </>
   ) : (
     <Card text="Log in to view your requests" />
@@ -75,7 +79,7 @@ function MyRequests() {
   return (
     <Layout>
       <h1 className="mt-3 mb-3">My Requests</h1>
-      {tradeRows.length ? children : <Card text="No requests found" />}
+      {children}
     </Layout>
   );
 }

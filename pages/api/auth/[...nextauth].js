@@ -23,10 +23,7 @@ if (config.use_env_variable) {
   );
 }
 
-// For more information on each option (and a full list of options) go to
-// https://next-auth.js.org/configuration/options
-export default NextAuth({
-  // https://next-auth.js.org/providers/overview
+export const authOptions = {
   providers: [
     GitHubProvider({
       clientId: process.env.GITHUB_ID,
@@ -48,4 +45,8 @@ export default NextAuth({
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
-});
+};
+
+// For more information on each option (and a full list of options) go to
+// https://next-auth.js.org/configuration/options
+export default NextAuth(authOptions);

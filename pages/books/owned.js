@@ -13,7 +13,9 @@ import BookList from '../../lib/components/BookList';
 import MyBookRow from '../../lib/components/MyBookRow';
 
 function MyBooksList({ sessionUserId }) {
-  const { loading, data, error, refetch } = useQuery(GET_BOOKS, {
+  const {
+    loading, data, error, refetch,
+  } = useQuery(GET_BOOKS, {
     variables: { where: JSON.stringify({ userId: sessionUserId, available: true }) },
     fetchPolicy: 'network-only',
   });
@@ -51,11 +53,13 @@ function MyBooks() {
       <Link href="/books/add" className="btn btn-primary mb-3">
         Add Book
       </Link>
-      {sessionUserId ? (
-        <MyBooksList sessionUserId={sessionUserId} />
-      ) : (
-        <Card text="Log in to view your books" />
-      )}
+      <div>
+        {sessionUserId ? (
+          <MyBooksList sessionUserId={sessionUserId} />
+        ) : (
+          <Card text="Log in to view your books" />
+        )}
+      </div>
     </Layout>
   );
 }

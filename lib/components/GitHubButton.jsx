@@ -10,15 +10,13 @@ const style = {
 function GitHubButton(props) {
   const { children, onClick } = props;
   return (
-    <div className="mr-3 flex-grow-1">
-      <button type="button" className="btn" style={style} onClick={onClick}>
-        <FontAwesomeIcon icon={faGithub} size="1x" />
-        {' '}
-        {children}
-        {' '}
-        GitHub
-      </button>
-    </div>
+    <button type="button" className="btn" style={style} onClick={onClick}>
+      <FontAwesomeIcon icon={faGithub} size="1x" />
+      {' '}
+      {children}
+      {' '}
+      GitHub
+    </button>
   );
 }
 

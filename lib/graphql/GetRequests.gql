@@ -5,21 +5,20 @@ query getRequests {
     status
     createdAt
     updatedAt
-    tradeBooks
-      {
+    tradeBooks {
+      id
+      ownedBook {
         id
-        ownedBook {
+        title
+        author
+        publicationYear
+        imageUrl
+        user {
           id
-          title
-          author
-          publicationYear
-          imageUrl
-          user {
-            id
-            screenName
-            location
-          }
+          name
+          location
         }
       }
+    }
   }
 }

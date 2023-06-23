@@ -17,7 +17,7 @@ const Book = function Book(props) {
     <>
       <strong>Publication Year:</strong>
       {' '}
-      {book.publicationYear ? 'Unavailable' : null}
+      {!!book.publicationYear === false ? 'Unavailable' : book.publicationYear}
       <br />
       {book.user && book.user.id !== sessionUserId && (
         <small className="text-muted">

@@ -1,7 +1,7 @@
-mutation updateUser($id: String, $fullName: String, $location: String) {
-  updateUser(id: $id, fullName: $fullName, location: $location) {
+mutation updateUser($id: String, $name: String, $location: String) {
+  updateUser(id: $id, name: $name, location: $location) {
     id
-    fullName
+    name
     location
   }
 }

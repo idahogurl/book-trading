@@ -4,23 +4,33 @@ import db from '../db/models';
 const { Sequelize: { Op }, User, TradeBook } = db;
 
 async function getUsersByIds(ids) {
-  return User.findAll({
+  const users = await User.findAll({
     where: {
       id: {
         [Op.in]: ids,
       },
     },
   });
+  const sortOrder = new Map();
+  for (let i = 0; i < ids.length; i += 1) {
+    sortOrder.set(ids[i], i);
+  }
+  return users.sort((a, b) => (sortOrder.get(a.id) > sortOrder.get(b.id) ? 1 : -1));
 }
 
 async function getTradeBookByIds(ids) {
-  return TradeBook.findAll({
+  const tradeBooks = await TradeBook.findAll({
     where: {
       id: {
         [Op.in]: ids,
       },
     },
   });
+  const sortOrder = new Map();
+  for (let i = 0; i < ids.length; i += 1) {
+    sortOrder.set(ids[i], i);
+  }
+  return tradeBooks.sort((a, b) => (sortOrder.get(a.id) > sortOrder.get(b.id) ? 1 : -1));
 }
 
 export default function context() {

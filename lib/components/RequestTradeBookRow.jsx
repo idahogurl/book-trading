@@ -10,7 +10,7 @@ function CreateTradeBookRow({ book, onClick, selected }) {
     <button
       type="button"
       id={book.id}
-      className={cs('btn ml-3', { 'btn-danger': selected }, { 'btn-primary': !selected })}
+      className={cs('btn ml-3 border-0', { 'btn-danger': selected }, { 'btn-primary': !selected })}
       title={selected ? 'Remove' : 'Add'}
       onClick={() => {
         onClick({ id: book.id, userId: book.user.id });

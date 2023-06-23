@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useSession } from 'next-auth/react';
 import { Formik } from 'formik';
 import { useLazyQuery } from '@apollo/client';
@@ -27,7 +28,7 @@ function getResultsText(data) {
 
 function AddBooksForm({ sessionUserId }) {
   const [getGoodReadsBooks, { error, data }] = useLazyQuery(GET_GOODREADS_BOOKS, {
-    fetchPolicy: 'no-cache',
+    fetchPolicy: 'network-only',
   });
 
   // should probably do paging
@@ -62,7 +63,9 @@ function AddBooksForm({ sessionUserId }) {
           return errors;
         }}
       >
-        {({ values, errors, handleChange, handleSubmit, isSubmitting }) => (
+        {({
+          values, errors, handleChange, handleSubmit, isSubmitting,
+        }) => (
           <div>
             <form onSubmit={handleSubmit}>
               <input
@@ -71,7 +74,8 @@ function AddBooksForm({ sessionUserId }) {
                 className="form-control d-inline-block w-75"
                 onChange={handleChange}
                 value={values.q}
-              />{' '}
+              />
+              {' '}
               {errors.trade && <div className="text-danger">{errors.trade}</div>}
               <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
                 Find
@@ -87,7 +91,8 @@ function AddBooksForm({ sessionUserId }) {
                         checked={values.field === field.id}
                         onChange={handleChange}
                         className="form-check-input"
-                      />{' '}
+                      />
+                      {' '}
                       {field.name}
                     </label>
                   </div>
@@ -115,6 +120,14 @@ function AddBooksForm({ sessionUserId }) {
     </div>
   );
 }
+
+AddBooksForm.propTypes = {
+  sessionUserId: PropTypes.string,
+};
+
+AddBooksForm.defaultProps = {
+  sessionUserId: undefined,
+};
 
 function AddBooks() {
   const { data: session } = useSession();

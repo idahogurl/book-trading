@@ -138,17 +138,17 @@ const resolvers = {
 
       return trade;
     },
-    createUser: async (_, { id, fullName, location }) => {
+    createUser: async (_, { id, name, location }) => {
       const user = User.create({
         id,
-        fullName,
+        name,
         location,
       });
       return user;
     },
-    updateUser: async (_, { id, fullName, location }) => {
+    updateUser: async (_, { id, name, location }) => {
       const user = await User.findByPk(id);
-      await user.update({ fullName, location });
+      await user.update({ name, location });
       return user;
     },
   },
