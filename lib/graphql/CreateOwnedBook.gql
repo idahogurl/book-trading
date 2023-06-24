@@ -6,5 +6,6 @@ mutation createOwnedBook($input: CreateOwnedBookInput) {
     publicationYear
     imageUrl
     userId
+    available
   }
 }
