@@ -1,29 +1,29 @@
 /* This file is auto-generated using https://github.com/harish2704/sequelize-migration-generator. */
 
-
 module.exports = {
   up(queryInterface, Sequelize) {
-    return queryInterface.createTable('trade_books', {
+    return queryInterface.createTable('trade_book', {
       id: {
-        type: Sequelize.STRING,
+        type: Sequelize.UUID,
         allowNull: false,
         primaryKey: true,
+        defaultValue: Sequelize.fn('gen_random_uuid'),
       },
 
       trade_id: {
-        type: Sequelize.STRING,
-        references: { model: 'trades', key: 'id' },
+        type: Sequelize.UUID,
+        references: { model: 'trade', key: 'id' },
         allowNull: false,
       },
 
       book_id: {
-        type: Sequelize.STRING,
-        references: { model: 'owned_books', key: 'id' },
+        type: Sequelize.UUID,
+        references: { model: 'owned_book', key: 'id' },
         allowNull: false,
       },
 
       user_id: {
-        type: Sequelize.STRING,
+        type: Sequelize.UUID,
         allowNull: false,
         references: { model: 'users', key: 'id' },
         field: 'user_id',
@@ -38,18 +38,19 @@ module.exports = {
       created_at: {
         type: Sequelize.DATE,
         allowNull: false,
+        defaultValue: Sequelize.fn('now'),
       },
 
       updated_at: {
         type: Sequelize.DATE,
         allowNull: false,
+        defaultValue: Sequelize.fn('now'),
       },
 
     });
   },
 
-  down(queryInterface, Sequelize) {
-    return queryInterface.dropTable('trade_books');
+  down(queryInterface) {
+    return queryInterface.dropTable('trade_book');
   },
 };
-

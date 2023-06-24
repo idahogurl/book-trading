@@ -1,0 +1,7 @@
+mutation updateUser($id: String, $name: String, $location: String) {
+  updateUser(id: $id, name: $name, location: $location) {
+    id
+    name
+    location
+  }
+}

@@ -1,12 +1,12 @@
-export default function (sequelize, DataTypes) {
+export default function TradeModel(sequelize, DataTypes) {
   const Trade = sequelize.define('Trade', {
     id: {
-      type: DataTypes.STRING,
+      type: DataTypes.UUID,
       allowNull: false,
       primaryKey: true,
     },
     userId: {
-      type: DataTypes.STRING,
+      type: DataTypes.UUID,
       allowNull: false,
       field: 'user_id',
       references: { model: 'User', key: 'id' },
@@ -25,7 +25,7 @@ export default function (sequelize, DataTypes) {
       field: 'updated_at',
     },
   }, {
-    tableName: 'trades',
+    tableName: 'trade',
     timestamps: true,
     underscored: true,
   });

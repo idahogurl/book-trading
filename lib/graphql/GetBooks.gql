@@ -1,0 +1,15 @@
+query getBooks($where: JSON) {
+  ownedBooks(where: $where) {
+    id
+    title
+    author
+    publicationYear
+    imageUrl
+    requestCount
+    user {
+      id
+      name
+      location
+    }
+  }
+}

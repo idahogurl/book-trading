@@ -1,7 +1,0 @@
-mutation updateUser($id: String, $fullName: String, $location: String) {
-  updateUser(id: $id, fullName: $fullName, location: $location) {
-    id
-    fullName
-    location
-  }
-}

@@ -1,17 +1,20 @@
-export default function (sequelize, DataTypes) {
+import { Sequelize } from 'sequelize-cockroachdb';
+
+export default function OwnedBookModel(sequelize, DataTypes) {
   const OwnedBook = sequelize.define('OwnedBook', {
     id: {
       type: DataTypes.UUID,
       allowNull: false,
+      defaultValue: Sequelize.literal('DEFAULT'),
       primaryKey: true,
     },
     bookId: {
-      type: DataTypes.STRING,
+      type: DataTypes.UUID,
       allowNull: false,
       field: 'book_id',
     },
     userId: {
-      type: DataTypes.STRING,
+      type: DataTypes.UUID,
       allowNull: false,
       references: {
         references: { model: 'users', key: 'id' },
@@ -48,7 +51,7 @@ export default function (sequelize, DataTypes) {
       fields: ['book_id', 'user_id'],
       unique: true,
     }],
-    tableName: 'owned_books',
+    tableName: 'owned_book',
     timestamps: true,
     underscored: true,
   });

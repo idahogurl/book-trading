@@ -1,0 +1,11 @@
+mutation createOwnedBook($input: CreateOwnedBookInput) {
+  createOwnedBook(input: $input) {
+    id
+    title
+    author
+    publicationYear
+    imageUrl
+    userId
+    available
+  }
+}

@@ -1,0 +1,14 @@
+query getBook($id: String) {
+  ownedBook(id: $id) {
+    id
+    title
+    author
+    publicationYear
+    imageUrl
+    user {
+      id
+      name
+      location
+    }
+  }
+}

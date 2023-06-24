@@ -1,45 +1,40 @@
-// File is auto-generated. Do not modify!!
+import Sequelize from 'sequelize-cockroachdb';
 
-/* eslint-disable */
-'use strict'
+import configs from '../config/config.json';
+import OwnedBook from './ownedBook';
+import Trade from './trade';
+import TradeBook from './tradeBook';
+import User from './user';
 
-var fs = require('fs');
-var path = require('path');
-var Sequelize = require('sequelize');
+const env = process.env.NODE_ENV || 'development';
+const config = configs[env];
 
-var db = {};
-
-try {
-  var basename = path.basename(__filename);
-  var env = process.env.NODE_ENV || 'development';
-  var config = require(`${__dirname}/../config/config.json`)[env];
-
-  if (process.env.DATABASE_URL) {
-    // the application is executed on Heroku ... use the postgres database
-    var sequelize = require('sequelize-heroku').connect(Sequelize);
-  } else {
-    // the application is executed on the local machine ... use sqlite
-    var sequelize = new Sequelize(config.database, config.username, config.password, config);
-  }
-  
-  fs
-  .readdirSync(__dirname)
-  .filter(file => (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js'))
-  .forEach((file) => {
-    var model = sequelize.import(path.join(__dirname, file));
-    db[model.name] = model;
-  });
-
-  Object.keys(db).forEach((modelName) => {
-    if (db[modelName].associate) {
-      db[modelName].associate(db);
-    }
-  });
-
-  db.sequelize = sequelize;
-  db.Sequelize = Sequelize;
-} catch (e) {
-  console.error(e);
+let sequelize;
+if (config.use_env_variable) {
+  sequelize = new Sequelize(process.env[config.use_env_variable], config);
+} else {
+  sequelize = new Sequelize(
+    config.database,
+    config.username,
+    config.password,
+    config,
+  );
 }
 
-module.exports = db;
+const db = {
+  OwnedBook: OwnedBook(sequelize, Sequelize.DataTypes),
+  Trade: Trade(sequelize, Sequelize.DataTypes),
+  TradeBook: TradeBook(sequelize, Sequelize.DataTypes),
+  User: User(sequelize, Sequelize.DataTypes),
+};
+
+Object.keys(db).forEach((modelName) => {
+  if (db[modelName].associate) {
+    db[modelName].associate(db);
+  }
+});
+
+db.Sequelize = Sequelize;
+db.sequelize = sequelize;
+
+export default db;
