@@ -5,7 +5,8 @@ import NavBar from './NavBar';
 import GitHubButton from './GitHubButton';
 
 function Layout({ children }) {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  const loading = status === 'loading';
 
   return (
     <div className="container-fluid">
@@ -21,14 +22,20 @@ function Layout({ children }) {
               priority
             />
           </div>
-          <div className="col">
-            {session ? <GitHubButton onClick={() => signOut('github')}>Sign Out of</GitHubButton> : <GitHubButton onClick={() => signIn('github')}>Sign In with</GitHubButton>}
+          <div className="col-3">
+            {loading
+              ? null
+              : (
+                <div>
+                  {session ? <GitHubButton onClick={() => signOut('github')}>Sign Out of</GitHubButton> : <GitHubButton onClick={() => signIn('github')}>Sign In with</GitHubButton>}
+                </div>
+              )}
           </div>
         </div>
         <NavBar session={session} />
       </header>
       <main>
-        {children}
+        {loading ? null : children}
       </main>
     </div>
   );
