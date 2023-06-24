@@ -21,6 +21,8 @@ Fulfill the below user stories. Use whichever libraries or APIs you need. Give i
 - I can see and modify my trade cart before I submit my trade
 - I can search my books
 - I can search available books
+- I can accept or deny trades from other users
+- I can cancel proposed trades I created
 
 ### Technology
 
