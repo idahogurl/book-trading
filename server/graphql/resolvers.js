@@ -4,7 +4,7 @@ import db from '../db/models';
 import goodReadsRequest from './goodreads';
 
 const {
-  Sequelize: { Op }, Trade, OwnedBook, TradeBook, User,
+  sequelize, Sequelize: { Op }, Trade, OwnedBook, TradeBook, User,
 } = db;
 
 const parseOrder = function parseOrder(order) {
@@ -161,16 +161,23 @@ const resolvers = {
         order: parseOrder(order),
         where: parseWhere(where),
         offset,
-        group: ['TradeBooks.id', 'OwnedBook.id'],
-        include: [{ model: TradeBook }],
         attributes: {
           include: [
-            [db.sequelize.fn('COUNT', db.sequelize.col('TradeBooks.book_id')), 'tradeCount'],
+            [
+              // Note the wrapping parentheses in the call below!
+              sequelize.literal(`(
+                      SELECT COUNT(*)
+                      FROM trade_book
+                      WHERE
+                        trade_book.book_id = "OwnedBook".id
+                  )`),
+              'requestCount',
+            ],
           ],
         },
       });
 
-      // Exclude books current user is giving
+      // Exclude books current user is giving?
 
       return books.map((b) => {
         const book = b;
