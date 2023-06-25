@@ -1,0 +1,52 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.25.1
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  SNYK-JS-LODASH-567746:
+    - '@babel/register > lodash':
+        patched: '2023-06-25T08:54:46.889Z'
+        id: SNYK-JS-LODASH-567746
+        path: '@babel/register > lodash'
+    - sequelize > lodash:
+        patched: '2023-06-25T08:54:46.889Z'
+        id: SNYK-JS-LODASH-567746
+        path: sequelize > lodash
+    - sequelize-cli > lodash:
+        patched: '2023-06-25T08:54:46.889Z'
+        id: SNYK-JS-LODASH-567746
+        path: sequelize-cli > lodash
+    - '@babel/preset-env > @babel/plugin-transform-block-scoping > lodash':
+        patched: '2023-06-25T08:54:46.889Z'
+        id: SNYK-JS-LODASH-567746
+        path: '@babel/preset-env > @babel/plugin-transform-block-scoping > lodash'
+    - sequelize-cli > umzug > lodash:
+        patched: '2023-06-25T08:54:46.889Z'
+        id: SNYK-JS-LODASH-567746
+        path: sequelize-cli > umzug > lodash
+    - '@babel/preset-env > @babel/helper-module-imports > @babel/types > lodash':
+        patched: '2023-06-25T08:54:46.889Z'
+        id: SNYK-JS-LODASH-567746
+        path: >-
+          @babel/preset-env > @babel/helper-module-imports > @babel/types >
+          lodash
+    - '@babel/core > @babel/helpers > @babel/traverse > @babel/generator > lodash':
+        patched: '2023-06-25T08:54:46.889Z'
+        id: SNYK-JS-LODASH-567746
+        path: >-
+          @babel/core > @babel/helpers > @babel/traverse > @babel/generator >
+          lodash
+    - '@babel/preset-env > @babel/plugin-proposal-async-generator-functions > @babel/helper-remap-async-to-generator > @babel/helper-wrap-function > @babel/traverse > lodash':
+        patched: '2023-06-25T08:54:46.889Z'
+        id: SNYK-JS-LODASH-567746
+        path: >-
+          @babel/preset-env > @babel/plugin-proposal-async-generator-functions >
+          @babel/helper-remap-async-to-generator > @babel/helper-wrap-function >
+          @babel/traverse > lodash
+    - '@babel/preset-env > @babel/plugin-proposal-async-generator-functions > @babel/helper-remap-async-to-generator > @babel/helper-wrap-function > @babel/traverse > @babel/generator > lodash':
+        patched: '2023-06-25T08:54:46.889Z'
+        id: SNYK-JS-LODASH-567746
+        path: >-
+          @babel/preset-env > @babel/plugin-proposal-async-generator-functions >
+          @babel/helper-remap-async-to-generator > @babel/helper-wrap-function >
+          @babel/traverse > @babel/generator > lodash
