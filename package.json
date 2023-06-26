@@ -10,7 +10,9 @@
     "db:migrate": "dotenv -e .env.development.local -- yarn sequelize db:migrate --env development --config ./server/db/config/config.json --migrations-path ./server/db/migrations --models-path ./server/db/models",
     "create:migration": "yarn sequelize migration:generate --config ./server/db/config/config.json --migrations-path ./server/db/migrations --models-path ./sever/db/models",
     "db:migrate:undo": "yarn sequelize db:migrate:undo --config ./server/db/config/config.json --migrations-path ./server/db/migrations --models-path ./server/db/models",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "yarn run snyk-protect",
+    "snyk-protect": "snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -29,7 +31,7 @@
     "bootstrap": "^5.2.3",
     "classnames": "2.3.2",
     "dataloader": "^2.1.0",
-    "formik": "^2.2.9",
+    "formik": "^2.0.0",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
     "graphql-tools-types": "^1.3.1",
@@ -37,7 +39,7 @@
     "next": "13.1.0",
     "next-auth": "^4.18.7",
     "node-fetch": "^3.3.0",
-    "pg": "^8.8.0",
+    "pg": "^8.4.0",
     "prop-types": "^15.8.1",
     "react": "18.2.0",
     "react-bootstrap": "^2.7.0",
@@ -45,7 +47,8 @@
     "react-is": "^18.2.0",
     "sequelize-cockroachdb": "^6.0.5",
     "uuid": "^9.0.0",
-    "xml2js": "^0.5.0"
+    "xml2js": "^0.5.0",
+    "@snyk/protect": "latest"
   },
   "devDependencies": {
     "dotenv-cli": "^6.0.0",
@@ -57,9 +60,10 @@
     "eslint-plugin-react": "^7.31.11",
     "eslint-plugin-react-hooks": "^4.3.0",
     "prettier": "^2.8.3",
-    "sequelize": "^6.28.0",
+    "sequelize": "^6.29.0",
     "sequelize-auto": "^0.8.8",
-    "sequelize-cli": "^6.5.2",
+    "sequelize-cli": "^6.3.0",
     "sequelize-migration-generator": "^0.1.0"
-  }
+  },
+  "snyk": true
 }
