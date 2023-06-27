@@ -1,6 +1,7 @@
 query getBooks($where: JSON) {
   ownedBooks(where: $where) {
     id
+    bookId
     title
     author
     publicationYear
