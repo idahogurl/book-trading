@@ -35,7 +35,7 @@ Fulfill the below user stories. Use whichever libraries or APIs you need. Give i
 
 **APIs:**
 
-- GoodReads
+- Google Books API
 
 **Frontend:**
 

@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import { useSession } from 'next-auth/react';
 import { Formik } from 'formik';
+import Image from 'next/image';
+
 import { useLazyQuery } from '@apollo/client';
 
 import GET_GOODREADS_BOOKS from '../../lib/graphql/GetGoodreadsBooks.gql';
@@ -38,7 +40,7 @@ function AddBooksForm({ sessionUserId }) {
     <div>
       <Formik
         initialValues={{
-          q: 'Five Kingdoms',
+          q: 'Harry Potter',
           field: 'title',
         }}
         onSubmit={async (values, { setSubmitting }) => {
@@ -98,6 +100,7 @@ function AddBooksForm({ sessionUserId }) {
                   </div>
                 ))}
               </div>
+              <Image src="/images/powered-by-google.png" alt="Powered by Google" width={62} height={30} className="m-3" />
             </form>
             {error ? <ErrorNotification /> : null}
             {isSubmitting ? (

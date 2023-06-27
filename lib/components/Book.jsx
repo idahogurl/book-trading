@@ -1,5 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import PropTypes from 'prop-types';
+import Link from 'next/link';
+import Image from 'next/image';
+
 import SharedPropTypes from '../propTypes';
 
 import Card from './Card';
@@ -9,7 +12,7 @@ const Book = function Book(props) {
 
   const header = (
     <div className="card-img-top">
-      <img src={book.imageUrl} className="mt-2" alt="" width="111" height="148" />
+      <img src={book.imageUrl} className="mt-2" alt="" width={111} height={148} />
     </div>
   );
 
@@ -29,6 +32,11 @@ const Book = function Book(props) {
           {book.user.location ? book.user.location : 'Unknown'}
         </small>
       )}
+      <div className="mt-3">
+        <Link href={`http://books.google.com/books?id=${book.id}&hl=&source=gbs_api`} target="_blank">
+          <Image src="/images/gbs_preview_button1.png" alt="Preview Book" width={81} height={31} />
+        </Link>
+      </div>
     </>
   );
 
@@ -48,10 +56,12 @@ const Book = function Book(props) {
 Book.propTypes = {
   book: SharedPropTypes.book.isRequired,
   button: PropTypes.element,
+  sessionUserId: PropTypes.string,
 };
 
 Book.defaultProps = {
   button: null,
+  sessionUserId: undefined,
 };
 
 export default Book;

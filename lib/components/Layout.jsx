@@ -12,8 +12,8 @@ function Layout({ children }) {
   return (
     <div className="container-fluid">
       <header>
-        <div className="row align-items-center">
-          <div className="col-9">
+        <div className="d-flex flex-wrap">
+          <div className="flex-grow-1">
             <Image
               src="/images/bookSwap2.svg"
               alt="Book Swap"
@@ -23,11 +23,11 @@ function Layout({ children }) {
               priority
             />
           </div>
-          <div className="col-3">
+          <div className="align-self-center">
             {loading
               ? null
               : (
-                <div>
+                <div className="mb-3 mb-md-0">
                   {session ? <GitHubButton onClick={() => signOut('github')}>Sign Out of</GitHubButton> : <GitHubButton onClick={() => signIn('github')}>Sign In with</GitHubButton>}
                 </div>
               )}
