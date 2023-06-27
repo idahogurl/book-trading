@@ -17,7 +17,7 @@ import Card from '../../lib/components/Card';
 const fields = [
   { id: 'title', name: 'Title' },
   { id: 'author', name: 'Author' },
-  { id: 'all', name: 'ISBN' },
+  { id: 'isbn', name: 'ISBN' },
 ];
 
 function getResultsText(data) {

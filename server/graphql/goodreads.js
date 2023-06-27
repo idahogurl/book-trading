@@ -15,8 +15,8 @@ const goodReadsRequest = async function goodReadsRequest({ q, field, userId }) {
     const data = await fetch(`${apiUrl}?${params.toString()}`);
     const results = await data.json();
 
-    const books = results.items.map((w) => ({
-      publicationYear: w.volumeInfo.publishedDate.split('-')[0],
+    const books = (results.items || []).map((w) => ({
+      publicationYear: w.volumeInfo.publishedDate ? w.volumeInfo.publishedDate.split('-')[0] : null,
       id: w.id,
       title: w.volumeInfo.title,
       author: Array.isArray(w.volumeInfo.authors) ? w.volumeInfo.authors[0] : null,

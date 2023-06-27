@@ -33,7 +33,7 @@ const Book = function Book(props) {
         </small>
       )}
       <div className="mt-3">
-        <Link href={`http://books.google.com/books?id=${book.bookId}&hl=&source=gbs_api`} target="_blank">
+        <Link href={`http://books.google.com/books?id=${book.bookId || book.id}&hl=&source=gbs_api`} target="_blank">
           <Image src="/images/gbs_preview_button1.png" alt="Preview Book" width={81} height={31} />
         </Link>
       </div>
