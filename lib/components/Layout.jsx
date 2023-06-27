@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import NavBar from './NavBar';
 import GitHubButton from './GitHubButton';
+import Spinner from './Spinner';
 
 function Layout({ children }) {
   const { data: session, status } = useSession();
@@ -35,7 +36,7 @@ function Layout({ children }) {
         <NavBar session={session} />
       </header>
       <main>
-        {loading ? null : children}
+        {loading ? <Spinner /> : children}
       </main>
     </div>
   );
