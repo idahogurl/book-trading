@@ -338,10 +338,10 @@
   version "1.2.0"
   resolved "https://registry.npmjs.org/@rushstack/eslint-patch/-/eslint-patch-1.2.0.tgz"
 
-"@snyk/protect@^1.1184.0":
-  version "1.1184.0"
-  resolved "https://registry.yarnpkg.com/@snyk/protect/-/protect-1.1184.0.tgz#02130d3b3c03c22858c080fd4b53505f22d2c2ec"
-  integrity sha512-Te6GWlyvuLC9VgXicPyMCpFoNflg7thA5lthkMCRDWADUNxHAyd0kE2gPI5gdiKoeY/r1wj387ujCkw4C8sHvQ==
+"@snyk/protect@latest":
+  version "1.1193.0"
+  resolved "https://registry.yarnpkg.com/@snyk/protect/-/protect-1.1193.0.tgz#0b483e105a7a9ad1df8a3c2249d89374895cce76"
+  integrity sha512-/kNhccsKT5pWz/8rM7mpzalPFX8JArSkD+09HZJzDqV3VAQ78Jt3YE/jVkFtU+37J/OgsSAmcEqY1LcZxp/kwg==
 
 "@swc/helpers@0.4.14", "@swc/helpers@^0.4.14":
   version "0.4.14"
@@ -2867,8 +2867,9 @@ wkx@^0.5.0:
     "@types/node" "*"
 
 word-wrap@^1.2.3:
-  version "1.2.3"
-  resolved "https://registry.npmjs.org/word-wrap/-/word-wrap-1.2.3.tgz"
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/word-wrap/-/word-wrap-1.2.4.tgz#cb4b50ec9aca570abd1f52f33cd45b6c61739a9f"
+  integrity sha512-2V81OA4ugVo5pRo46hAoD2ivUJx8jXmWXfUkY4KFNw0hEptvN0QfH3K4nHiwzGeKl5rFKedV48QVoqYavy4YpA==
 
 wordwrap@~0.0.2:
   version "0.0.3"
