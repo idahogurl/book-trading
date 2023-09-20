@@ -338,10 +338,10 @@
   version "1.2.0"
   resolved "https://registry.npmjs.org/@rushstack/eslint-patch/-/eslint-patch-1.2.0.tgz"
 
-"@snyk/protect@^1.1184.0":
-  version "1.1184.0"
-  resolved "https://registry.yarnpkg.com/@snyk/protect/-/protect-1.1184.0.tgz#02130d3b3c03c22858c080fd4b53505f22d2c2ec"
-  integrity sha512-Te6GWlyvuLC9VgXicPyMCpFoNflg7thA5lthkMCRDWADUNxHAyd0kE2gPI5gdiKoeY/r1wj387ujCkw4C8sHvQ==
+"@snyk/protect@latest":
+  version "1.1225.0"
+  resolved "https://registry.yarnpkg.com/@snyk/protect/-/protect-1.1225.0.tgz#705e1e9b289dabc070438226389f8ac41d98b457"
+  integrity sha512-ojHt08LOE8UJoGs22pGlShQK8CIjpj497Mwjor1fXMvziMtayFx/GDFcGsI+CPWZVx708xCYO8aowrSD8NH1Fw==
 
 "@swc/helpers@0.4.14", "@swc/helpers@^0.4.14":
   version "0.4.14"
@@ -1494,9 +1494,10 @@ graphql@15.4.0:
   version "15.4.0"
   resolved "https://registry.npmjs.org/graphql/-/graphql-15.4.0.tgz"
 
-graphql@^16.6.0:
-  version "16.6.0"
-  resolved "https://registry.npmjs.org/graphql/-/graphql-16.6.0.tgz"
+graphql@^16.8.1:
+  version "16.8.1"
+  resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.8.1.tgz#1930a965bef1170603702acdb68aedd3f3cf6f07"
+  integrity sha512-59LZHPdGZVh695Ud9lRzPBVTtlX9ZCV150Er2W43ro37wVof0ctenSaskPPjN7lVTIN8mSZt8PHUNKZuNQUuxw==
 
 has-bigints@^1.0.1, has-bigints@^1.0.2:
   version "1.0.2"
