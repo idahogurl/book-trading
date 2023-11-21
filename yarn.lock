@@ -338,10 +338,10 @@
   version "1.2.0"
   resolved "https://registry.npmjs.org/@rushstack/eslint-patch/-/eslint-patch-1.2.0.tgz"
 
-"@snyk/protect@^1.1184.0":
-  version "1.1184.0"
-  resolved "https://registry.yarnpkg.com/@snyk/protect/-/protect-1.1184.0.tgz#02130d3b3c03c22858c080fd4b53505f22d2c2ec"
-  integrity sha512-Te6GWlyvuLC9VgXicPyMCpFoNflg7thA5lthkMCRDWADUNxHAyd0kE2gPI5gdiKoeY/r1wj387ujCkw4C8sHvQ==
+"@snyk/protect@latest":
+  version "1.1250.0"
+  resolved "https://registry.yarnpkg.com/@snyk/protect/-/protect-1.1250.0.tgz#744482dc7f1f457d15cca676942dbc91f8690e52"
+  integrity sha512-B4vkPmyfQB7LH7SMkqmcMLyAFtp6LaqGlUzq86oauhbG3BbIkiGctJE9WsZmmhyZDKjxzlqRP4EKiNH+UV09yw==
 
 "@swc/helpers@0.4.14", "@swc/helpers@^0.4.14":
   version "0.4.14"
@@ -1885,9 +1885,10 @@ natural-compare@^1.4.0:
   version "1.4.0"
   resolved "https://registry.npmjs.org/natural-compare/-/natural-compare-1.4.0.tgz"
 
-next-auth@^4.18.7:
-  version "4.21.1"
-  resolved "https://registry.npmjs.org/next-auth/-/next-auth-4.21.1.tgz"
+next-auth@^4.24.5:
+  version "4.24.5"
+  resolved "https://registry.yarnpkg.com/next-auth/-/next-auth-4.24.5.tgz#1fd1bfc0603c61fd2ba6fd81b976af690edbf07e"
+  integrity sha512-3RafV3XbfIKk6rF6GlLE4/KxjTcuMCifqrmD+98ejFq73SRoj2rmzoca8u764977lH/Q7jo6Xu6yM+Re1Mz/Og==
   dependencies:
     "@babel/runtime" "^7.20.13"
     "@panva/hkdf" "^1.0.2"
