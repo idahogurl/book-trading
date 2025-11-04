@@ -338,10 +338,10 @@
   version "1.2.0"
   resolved "https://registry.npmjs.org/@rushstack/eslint-patch/-/eslint-patch-1.2.0.tgz"
 
-"@snyk/protect@^1.1184.0":
-  version "1.1184.0"
-  resolved "https://registry.yarnpkg.com/@snyk/protect/-/protect-1.1184.0.tgz#02130d3b3c03c22858c080fd4b53505f22d2c2ec"
-  integrity sha512-Te6GWlyvuLC9VgXicPyMCpFoNflg7thA5lthkMCRDWADUNxHAyd0kE2gPI5gdiKoeY/r1wj387ujCkw4C8sHvQ==
+"@snyk/protect@latest":
+  version "1.1300.2"
+  resolved "https://registry.yarnpkg.com/@snyk/protect/-/protect-1.1300.2.tgz#0b572a45de239b05efddfde6aa97f45a0fd77c2d"
+  integrity sha512-E74PgBzdP9tg7mH2Hqw3kJ1GHmeiZzQlXNdon/l0blzR7Zjm9L6wnuQgZwTkZGdKJqU1O4jpqPgyjul4RYd8Hg==
 
 "@swc/helpers@0.4.14", "@swc/helpers@^0.4.14":
   version "0.4.14"
@@ -717,9 +717,10 @@ confusing-browser-globals@^1.0.10:
   version "1.0.11"
   resolved "https://registry.npmjs.org/confusing-browser-globals/-/confusing-browser-globals-1.0.11.tgz"
 
-cookie@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.npmjs.org/cookie/-/cookie-0.5.0.tgz"
+cookie@^0.7.0:
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.7.2.tgz#556369c472a2ba910f2979891b526b3436237ed7"
+  integrity sha512-yki5XnKuf750l50uGTllt6kKILY4nQ1eNIQatoXEByZ5dWgnKqbnqmTrBE5B4N7lrMJKQ2ytWMiTO2o0v6Ew/w==
 
 core-js-pure@^3.0.0, core-js-pure@^3.25.1:
   version "3.27.1"
@@ -1693,9 +1694,14 @@ isexe@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/isexe/-/isexe-2.0.0.tgz"
 
-jose@^4.10.0, jose@^4.11.4:
+jose@^4.10.0:
   version "4.13.1"
   resolved "https://registry.npmjs.org/jose/-/jose-4.13.1.tgz"
+
+jose@^4.15.5:
+  version "4.15.9"
+  resolved "https://registry.yarnpkg.com/jose/-/jose-4.15.9.tgz#9b68eda29e9a0614c042fa29387196c7dd800100"
+  integrity sha512-1vUQX+IdDMVPj4k8kOxgUqlcK518yluMuGZwqlr44FS1ppZB/5GWh4rZG89erpOBOJjU/OBsnCVFfapsRz6nEA==
 
 js-beautify@^1.14.5:
   version "1.14.7"
@@ -1885,14 +1891,15 @@ natural-compare@^1.4.0:
   version "1.4.0"
   resolved "https://registry.npmjs.org/natural-compare/-/natural-compare-1.4.0.tgz"
 
-next-auth@^4.18.7:
-  version "4.21.1"
-  resolved "https://registry.npmjs.org/next-auth/-/next-auth-4.21.1.tgz"
+next-auth@^4.24.12:
+  version "4.24.13"
+  resolved "https://registry.yarnpkg.com/next-auth/-/next-auth-4.24.13.tgz#e55e524b3c060d670c3fa2c0731026894b9897c6"
+  integrity sha512-sgObCfcfL7BzIK76SS5TnQtc3yo2Oifp/yIpfv6fMfeBOiBJkDWF3A2y9+yqnmJ4JKc2C+nMjSjmgDeTwgN1rQ==
   dependencies:
     "@babel/runtime" "^7.20.13"
     "@panva/hkdf" "^1.0.2"
-    cookie "^0.5.0"
-    jose "^4.11.4"
+    cookie "^0.7.0"
+    jose "^4.15.5"
     oauth "^0.9.15"
     openid-client "^5.4.0"
     preact "^10.6.3"
